@@ -1,0 +1,12 @@
+module.exports={
+    facebook:{
+        clientID:'',
+        clientSecret:'',
+        callbackURL:''
+    },
+    google:{
+        clientID:'',
+        clientSecret:'',
+        callbackURL:''
+    }
+};
