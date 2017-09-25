@@ -6,21 +6,23 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "latest",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-rate-limit": "^2.9.0",
     "jade": "~1.11.0",
+    "jsonwebtoken": "latest",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2",
-    "pg":"6.4.1",
+    "nodemailer": "^4.1.0",
+    "passport": "latest",
+    "passport-facebook": "latest",
+    "passport-google-oauth2": "latest",
+    "passport-jwt": "latest",
+    "pg": "^6.4.1",
     "sequelize": "3.30.4",
     "sequelize-cli": "latest",
-    "jsonwebtoken":"latest",
-    "bcrypt":"latest",
-    "passport":"latest",
-    "passport-facebook":"latest",
-    "passport-jwt":"latest",
-    "passport-google-oauth2":"latest"
+    "serve-favicon": "~2.4.2"
   }
 }

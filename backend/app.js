@@ -14,6 +14,7 @@ var authConfig = require('./helpers/auth_config');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
+var api = require('./routes/api');
 
 
 
@@ -37,6 +38,7 @@ app.use(passport.initialize());
 app.use('/', index);
 app.use('/users', users);
 app.use('/auth', auth);
+app.use('/api',api);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
