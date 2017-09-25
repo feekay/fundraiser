@@ -4,11 +4,10 @@ var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var jwtStrategy = require('passport-jwt').Strategy;
 var authConfig = require('./helpers/auth_config');
 var jwt= require('jsonwebtoken');
+var secret = require('../config/constants').SECRET;
+var sign_token= require('../helpers/token');
 
-function generateToken(user){
-    secret = process.env.SECRET || 'mysupersecretkey';
-    return jwt.sign(user.id,secret);
-}
+
 passport.use(new FacebookStrategy({
     clientID:authConfig.facebook.clientID,
     clientSecret:authConfig.facebook.clientSecret,
@@ -19,7 +18,8 @@ passport.use(new FacebookStrategy({
 
         //MAKE TOKEN AND CREATE USER STUFF
     
-        //user.token =generateToken(user);
+        //user.token =  sign_token(user);
+
         return done(null,profile);
       });
     }
@@ -35,7 +35,7 @@ passport.use(new GoogleStrategy({
       process.nextTick(function(){
 
         //MAKE TOKEN AND CREATE USER STUFF
-        //user.token =generateToken(user);
+        //user.token =  sign_token(user);
         
         return done(null,profile);
       });
