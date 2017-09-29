@@ -6,11 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var authentication = require('./helpers/authentication');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google-oauth2').Strategy;
-var jwtStrategy = require('passport-jwt').Strategy;
-var authConfig = require('./helpers/auth_config');
-
+var jwtStrategy = require('passport-jwt');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');

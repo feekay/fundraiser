@@ -4,7 +4,11 @@
     "password": null,
     "database": "database_development",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "dialectOptions": {
+      "charset": "utf8",
+      "collate": "utf8_unicode_ci"
+    }
   },
   "test": {
     "username": "root",
@@ -14,7 +18,7 @@
     "dialect": "mysql"
   },
   "production": {
-//    "use_env_variable":"",
+    "use_env_variable":"",
     "username": "root",
     "password": null,
     "database": "database_production",

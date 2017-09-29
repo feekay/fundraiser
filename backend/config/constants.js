@@ -5,7 +5,8 @@ module.exports = {
             CREATED:201,
             UPDATE:201,
             BAD_REQUEST: 400,
-            UNAUTHORIZED: 403,
+            UNAUTHORIZED: 401,
+            FORBIDDEN:403,
             NOT_FOUND:404,
             SERVER_ERROR: 500,
         },
@@ -40,5 +41,6 @@ module.exports = {
      },
      SECRET:{
          superSecret:"djmo5bgfiewuprb9eai4ek"
-     }
+     },
+     BASE_URL:''
 }
