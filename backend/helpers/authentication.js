@@ -25,25 +25,17 @@ passport.use(new FacebookTokenStrategy({
         }
       }).then(function (user) {
         if (user) {
-          u.token = sign_token(user.id, {
-            expiresIn: '5d'
-          });
           return done(null, user);
         } else {
           u.username = u.name + uuid.v4().slice(0, 4);
           createUser(u, {
             type: literals.ACCOUNTS.FB,
           }).then(function (usr) {
-            u.token = sign_token(usr.id, {
-              expiresIn: '5d'
-            });
             return done(null, usr);
           }).catch(function (err) {
             done(err);
           });
-
         }
-
       }).catch(function (err) {
         done(err);
       });
@@ -68,18 +60,12 @@ passport.use(new GoogleTokenStrategy({
         }
       }).then(function (user) {
         if (user) {
-          u.token = sign_token(user.id, {
-            expiresIn: '5d'
-          });
           return done(null, user);
         } else {
           u.username = u.name + uuid.v4().slice(0, 4);
           createUser(u, {
             type: literals.ACCOUNTS.FB,
           }).then(function (usr) {
-            u.token = sign_token(usr.id, {
-              expiresIn: '5d'
-            });
             return done(null, usr);
           }).catch(function (err) {
             done(err);
@@ -101,7 +87,13 @@ passport.use(new jwtStrategy({
 }, function (payload, done) {
   models.User.find({
     where: {
-      id: payload
+      id: payload.user_id,
+      reset_time: {
+        $or:{
+          $lt: new Date(payload.iat*1000),
+          $eq:null
+        }
+      }
     }
   }).then(function (user) {
     if (user) {

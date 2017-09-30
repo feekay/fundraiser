@@ -22,7 +22,7 @@ var user_params = {
   'username': 'string',
 }
 
-
+//PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
   //VERIFY THE TOKEN IS VALID AND THE PAYLOAD IS MATCHED AGAINST A MAIL ADDRESS
   secret = process.env.SECRET || secret.superSecret;
@@ -30,7 +30,7 @@ router.param('token', function (req, res, next, token) {
     payload = jwt.verify(token, secret);
     models.Reset.find({
       where: {
-        key: payload,
+        key: payload.key,
         valid: true
       },
       include: [{
@@ -51,7 +51,7 @@ router.param('token', function (req, res, next, token) {
     payload = jwt.decode(token);
     models.Reset.find({
       where: {
-        key: payload
+        key: payload.key
       }
     }).then(function (reset) {
       if (reset) {
@@ -64,6 +64,68 @@ router.param('token', function (req, res, next, token) {
   }
 });
 
+//SERVE RESET PAGE
+router.get('/reset/:token', function (req, res, next) {
+  res.render('reset-password');
+});
+
+//HANDLE RESET REQUEST
+router.post('/reset/:token', function (req, res, next) {
+  //RESET THE PASSWORD FOR THE USER IN REQUEST
+  var user = req.user;
+  var post = req.body;
+  models.User.find({
+    where: {
+      id: user.id
+    }
+  }).then(function (user) {
+    if (user) {
+      user.updateAttributes({
+        password: hasher.hash(post.password),
+        reset_time: new Date()
+      });
+    }
+  }).catch(next);
+});
+
+
+//Serve forget password page (start of reset process)
+router.get('/forget', function (req, res, next) {
+  //SERVE THE FORGOT PASSWORD PAGE
+  res.render('forgot-password');
+});
+
+//Handle forget page
+router.post('/forget', function (req, res, next) {
+  //SAVE A UUID AGAINST THE POSTED MAIL
+  //GENERATE TOKEN OF THIS UUID4 PAYLOAD that expires in an hour
+  //SEND MAIL TO THE POSTED EMAIL CONTAINING A LINK TO RESET/token
+  var post = req.body;
+  models.User.find({
+    where: {
+      email: post.email
+    }
+  }).then(function (user) {
+    if (user) {
+      payload = uuid.v4();
+      models.Reset.create({
+        key: payload,
+        valid: true
+      }).then(function (reset) {
+        reset.setUser(user);
+        link = constants.BASE_URL + '/reset/' + sign_token({key:payload}, {
+          expiresIn: '1h'
+        });
+        //mailer.send('success-link-template');
+      }).catch(next);
+    } else {
+      //mailer.sendMail('malicious-template');      
+    }
+  }).catch(next);
+});
+
+
+//SIGNUP AND LOGIN APIS
 router.post('/facebook/token',
   passport.authenticate('facebook-token', {
     session: false
@@ -121,7 +183,6 @@ router.post('/login', function (req, res, next) {
   }).then(function (user) {
     if (user) {
       if (hasher.compare(post.password, user.password)) {
-        //sign_token(user.id);
         req.auth = user.id;
         res.status(constants.HTTP.CODES.SUCCESS);
         next();
@@ -136,57 +197,4 @@ router.post('/login', function (req, res, next) {
   }).catch(next);
 }, respondWithToken);
 
-router.get('/reset/:token', function (req, res, next) {
-  res.render('reset-password');
-});
-
-router.post('/reset/:token', function (req, res, next) {
-  //RESET THE PASSPOST FOR THE USER IN REQUEST
-  var user = req.user;
-  var post = req.body;
-  models.User.find({
-    where: {
-      id: user.id
-    }
-  }).then(function (user) {
-    if (user) {
-      user.updateAttributes({
-        password: hasher.hash(post.password)
-      });
-    }
-  }).catch(next);
-});
-
-router.get('/forget', function (req, res, next) {
-  //SERVE THE FORGOT PASSWORD PAGE
-  res.render('forgot-password');
-});
-
-router.post('/forget', function (req, res, next) {
-  //SAVE A UUID AGAINST THE POSTED MAIL
-  //GENERATE TOKEN OF THIS UUID4 PAYLOAD that expires in an hour
-  //SEND MAIL TO THE POSTED EMAIL CONTAINING A LINK TO RESET/token
-  var post = req.body;
-  models.User.find({
-    where: {
-      email: post.email
-    }
-  }).then(function (user) {
-    if (user) {
-      payload = uuid.v4();
-      models.Reset.create({
-        key: payload,
-        valid: true
-      }).then(function (reset) {
-        reset.setUser(user);
-        link = constants.BASE_URL + '/reset/' + sign_token(payload, {
-          expiresIn: '1h'
-        });
-        //mailer.send('success-link-template');
-      }).catch(next);
-    } else {
-      //mailer.sendMail('malicious-template');      
-    }
-  }).catch(next);
-});
 module.exports = router;

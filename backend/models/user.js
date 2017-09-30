@@ -3,11 +3,11 @@ var literals = require('../helpers/literals');
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     id: {
-        allowNull: false,
-        defaultValue: DataTypes.UUID4,
-        primaryKey: true,
-        type: DataTypes.UUID
-      },
+      allowNull: false,
+      defaultValue: DataTypes.UUID4,
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
     name: DataTypes.STRING,
     username: {
       type: DataTypes.STRING,
@@ -16,13 +16,13 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       unique: true,
-      validate:{
-        isEmail:true
+      validate: {
+        isEmail: true
       }
     },
     password: DataTypes.STRING,
-    phone:{
-      type:DataTypes.STRING,
+    phone: {
+      type: DataTypes.STRING,
     },
     account_no: {
       type: DataTypes.STRING
@@ -34,18 +34,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     credit: {
-      type:DataTypes.FLOAT,
-      defaultValue:0.0
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0
     },
     verified: {
-      type:DataTypes.BOOLEAN,
-      defaultValue:false
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     type: {
       type: DataTypes.STRING,
-      validate:{
+      validate: {
         isIn: [literals.ACCOUNTS.ALL]
       }
+    },
+    reset_time: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     classMethods: {

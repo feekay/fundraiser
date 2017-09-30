@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
     next()
   } else {
     res.json(response.formatResponse(constants.MESSAGES.SIGNUP.SUCCESS, {
-      token: sign_token(req.auth, {
+      token: sign_token({user_id:req.auth}, {
         expiresIn: '5d'
       })
     }));
