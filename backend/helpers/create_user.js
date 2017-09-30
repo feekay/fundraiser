@@ -1,5 +1,6 @@
 var models = require('../models');
 var literals = require('../helpers/literals');
+var hasher = require('../helpers/hasher');
 
 module.exports=function(post, options = {}) {
   if (options.type) {

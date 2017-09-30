@@ -13,19 +13,20 @@ var uuid = require('uuid');
 var literals = require('../helpers/literals');
 var createUser = require('../helpers/create_user');
 var respondWithToken = require('../helpers/auth_token');
+var sign_token = require('../helpers/token');
+var secretConfig = require('../config/constants').SECRET;
 //var mailer = require('');
 
 var user_params = {
   'name': 'string',
   'email': 'string',
-  'password': 'string',
-  'username': 'string',
+  'password': 'string'
 }
 
 //PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
   //VERIFY THE TOKEN IS VALID AND THE PAYLOAD IS MATCHED AGAINST A MAIL ADDRESS
-  secret = process.env.SECRET || secret.superSecret;
+  secret = process.env.SECRET || secretConfig.superSecret;
   try {
     payload = jwt.verify(token, secret);
     models.Reset.find({
@@ -39,6 +40,7 @@ router.param('token', function (req, res, next, token) {
     }).then(function (reset) {
       if (reset) {
         req.user = reset.User;
+        req.key = reset.key;
         //       req.user = reset.getUser()
         next();
       } else {
@@ -72,21 +74,31 @@ router.get('/reset/:token', function (req, res, next) {
 //HANDLE RESET REQUEST
 router.post('/reset/:token', function (req, res, next) {
   //RESET THE PASSWORD FOR THE USER IN REQUEST
-  var user = req.user;
+  var u= req.user;
   var post = req.body;
   models.User.find({
     where: {
-      id: user.id
+      id: u.id
     }
   }).then(function (user) {
     if (user) {
+      req.auth = user.id;
       user.updateAttributes({
         password: hasher.hash(post.password),
         reset_time: new Date()
+      }).then(function(){
+        models.Reset.find({where:{key:req.key}}).then(function(r){
+          if(r){
+            r.updateAttributes({
+              valid:false
+            });
+          }
+          next();
+        });
       });
     }
   }).catch(next);
-});
+}, respondWithToken);
 
 
 //Serve forget password page (start of reset process)
@@ -113,13 +125,18 @@ router.post('/forget', function (req, res, next) {
         valid: true
       }).then(function (reset) {
         reset.setUser(user);
-        link = constants.BASE_URL + '/reset/' + sign_token({key:payload}, {
+        link = constants.BASE_URL + '/reset/' + sign_token({ key: payload }, {
           expiresIn: '1h'
         });
-        //mailer.send('success-link-template');
+        //mailer.sendMail('success-link-template');
+        res.status(constants.HTTP.CODES.SUCCESS);
+        res.send(link);
+        //res.render('redirect-mail');
       }).catch(next);
     } else {
       //mailer.sendMail('malicious-template');      
+      res.sendStatus(constants.HTTP.CODES.SUCCESS);
+        //res.render('redirect-mail');
     }
   }).catch(next);
 });
@@ -163,9 +180,21 @@ router.post('/signup', function (req, res, next) {
       if (user) {
         req.auth = user.id;
       }
-    }).catch(next);
+    }).then(next).catch(function (err) {
+      if (err.name == "SequelizeValidationError") {
+        res.status(constants.HTTP.CODES.BAD_REQUEST)
+        res.json(response.formatResponse(constants.MESSAGES.GENERAL.FIELDS_INVALID));
+      }else if(err.name =="SequelizeUniqueConstraintError"){
+        res.status(constants.HTTP.CODES.BAD_REQUEST)
+        res.json(response.formatResponse(constants.MESSAGES.SIGNUP.EXIST));
+      }
+      else{
+        next(err);
+      }
+    });
   } else {
-    res.json(response.formatResponse(constants.MESSAGES.GENERAL.FIELDS_REQUIRED));
+    res.status(constants.HTTP.CODES.BAD_REQUEST)
+    res.json(response.formatResponse(constants.MESSAGES.GENERAL.FIELDS_INVALID));
   }
 }, respondWithToken);
 

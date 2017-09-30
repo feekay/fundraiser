@@ -1,7 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Reset = sequelize.define('Reset', {
-    key: DataTypes.STRING
+    key: DataTypes.STRING,
+    valid:{
+      type: DataTypes.BOOLEAN,
+      defaultValue:true
+    }
   }, {
     classMethods: {
       associate: function(models) {

@@ -9,7 +9,7 @@ var secret = require('../config/constants').SECRET;
 var sign_token = require('./token');
 var createUser = require('./create_user');
 var models = require('../models');
-
+/*
 passport.use(new FacebookTokenStrategy({
   clientID: authConfig.facebook.clientID,
   clientSecret: authConfig.facebook.clientSecret,
@@ -80,11 +80,13 @@ passport.use(new GoogleTokenStrategy({
     });
   }
 }));
+*/
 var sec = process.env.SECRET || secret.superSecret;
 passport.use(new jwtStrategy({
   jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderAsBearerToken, ExtractJwt.fromBodyField('user.token'), ExtractJwt.fromBodyField('token')]),
   secretOrKey: sec
 }, function (payload, done) {
+    console.log(payload.user_id); 
   models.User.find({
     where: {
       id: payload.user_id,
@@ -96,6 +98,7 @@ passport.use(new jwtStrategy({
       }
     }
   }).then(function (user) {
+    console.log(user);
     if (user) {
       return done(null, user);
     } else {

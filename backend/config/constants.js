@@ -34,7 +34,7 @@ module.exports = {
             PARTIAL_SUCCESS:"Some records were invalid",
             BAD_QUERY:"Some or all of the parameter(s) in your query are invalid",
             INVALID_QUERY: "Query paramter(s) missing, please provide the required parameters",
-            FIELDS_REQUIRED: "Input field(s) missing or invalid, please provide the correct required fields.",
+            FIELDS_INVALID: "Input field(s) missing or invalid, please provide the correct required fields.",
             UNIQUE_CONSTRAINT: "Unique key error; key already exists",
             INTERNAL_ERROR:"We are fixing a few things internally. Sorry for the inconvinience!"
         }
