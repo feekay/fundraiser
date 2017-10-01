@@ -13,7 +13,11 @@ module.exports = {
       },
       paid: {
         type: Sequelize.BOOLEAN,
-        defaultValue:false
+        defaultValue: false
+      },
+      annonymous: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       pay_time: {
         type: Sequelize.DATE

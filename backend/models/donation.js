@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       defaultValue:false
     },
+    annonymous: {
+      type:DataTypes.BOOLEAN,
+      defaultValue:false
+    },
     pay_time: DataTypes.DATE
   }, {
     classMethods: {

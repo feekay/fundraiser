@@ -3,7 +3,6 @@ var router = express.Router();
 var models = require('../models');
 var passport = require('passport');
 
-
 var response = require('../helpers/response');
 var validate = require('../helpers/validate');
 var constants = require('../config/constants');
@@ -16,6 +15,10 @@ var respondWithToken = require('../helpers/auth_token');
 var sign_token = require('../helpers/token');
 var secretConfig = require('../config/constants').SECRET;
 //var mailer = require('');
+var Sequelize = require('sequelize');
+
+
+const Op = Sequelize.Op;
 
 var user_params = {
   'name': 'string',
@@ -202,7 +205,7 @@ router.post('/login', function (req, res, next) {
   var post = req.body;
   models.User.find({
     where: {
-      /*$or: [{
+      /*[Op.or]: [{
         username: post.username
       }, {
         email: post.username

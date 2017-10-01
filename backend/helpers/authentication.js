@@ -9,6 +9,10 @@ var secret = require('../config/constants').SECRET;
 var sign_token = require('./token');
 var createUser = require('./create_user');
 var models = require('../models');
+var Sequelize = require('sequelize');
+
+
+const Op = Sequelize.Op;
 /*
 passport.use(new FacebookTokenStrategy({
   clientID: authConfig.facebook.clientID,
@@ -90,9 +94,9 @@ passport.use(new jwtStrategy({
     where: {
       id: payload.user_id,
       reset_time: {
-        $or:{
-          $lt: new Date(payload.iat*1000),
-          $eq:null
+        [Op.or]:{
+          [Op.lt]: new Date(payload.iat*1000),
+          [Op.eq]:null
         }
       }
     }
