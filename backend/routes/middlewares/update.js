@@ -114,5 +114,20 @@ module.exports = {
             res.status(constants.HTTP.CODES.SUCCESS);
             res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
         }).catch(next);
+    },
+    closeVolunteering:function (req, res, next) {
+        var param = req.params.cashid;
+        models.Volunteering.find({
+            where: {
+                id: param
+            }
+        }).then(function (v) {
+            var c = v.getCase();
+            c.updateAttributes({
+                active: false
+            });
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+        }).catch(next);
     }
 };

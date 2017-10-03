@@ -1,5 +1,9 @@
 'use strict';
-var literals = require('../helpers/literals')
+var literals = require('../helpers/literals');
+var Sequelize = require('sequelize');
+
+const Op = Sequelize.Op;
+
 module.exports = (sequelize, DataTypes) => {
   var CashDonation = sequelize.define('CashDonation', {
     id: {
@@ -19,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     category: {
       type: DataTypes.STRING,
       validate: {
-        isIn: [literals.CATEGORIES.ALL]
+        [Op.isIn]: [literals.CATEGORIES.ALL]
       }
     },
   }, {

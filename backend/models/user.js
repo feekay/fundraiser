@@ -1,5 +1,9 @@
 'use strict';
 var literals = require('../helpers/literals');
+var Sequelize = require('sequelize');
+
+const Op = Sequelize.Op;
+
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
     id: {
@@ -16,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       validate: {
-        isEmail: true
+        [Op.isEmail]: true
       }
     },
     password: DataTypes.STRING,
@@ -43,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     type: {
       type: DataTypes.STRING,
       validate: {
-        isIn: [literals.ACCOUNTS.ALL]
+        [Op.isIn]: [literals.ACCOUNTS.ALL]
       }
     },
     reset_time: {

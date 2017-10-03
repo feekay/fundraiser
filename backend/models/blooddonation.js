@@ -1,5 +1,9 @@
 'use strict';
 var literals = require('../helpers/literals');
+var Sequelize = require('sequelize');
+
+const Op = Sequelize.Op;
+
 module.exports = (sequelize, DataTypes) => {
   var BloodDonation = sequelize.define('BloodDonation', {
     id: {
@@ -11,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     blood_group: {
       type:DataTypes.STRING,
       validate: {
-        isIn:[literals.BLOOD_GROUPS.ALL]
+        [Op.isIn]:[literals.BLOOD_GROUPS.ALL]
       }
     },
     location: DataTypes.STRING,

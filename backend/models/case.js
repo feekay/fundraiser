@@ -1,4 +1,8 @@
 'use strict';
+var Sequelize = require('sequelize');
+
+const Op = Sequelize.Op;
+
 module.exports = (sequelize, DataTypes) => {
   var Case = sequelize.define('Case', {
     title: DataTypes.STRING,
@@ -7,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     url: {
       type:DataTypes.STRING,
       validate:{
-        isUrl:true
+        [Op.isUrl]:true
       }
     },
     active: {
