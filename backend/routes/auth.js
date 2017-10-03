@@ -14,17 +14,11 @@ var createUser = require('../helpers/create_user');
 var respondWithToken = require('../helpers/auth_token');
 var sign_token = require('../helpers/token');
 var secretConfig = require('../config/constants').SECRET;
+var user_params = require('../helpers/parameters').USER
 //var mailer = require('');
 var Sequelize = require('sequelize');
 
-
 const Op = Sequelize.Op;
-
-var user_params = {
-  'name': 'string',
-  'email': 'string',
-  'password': 'string'
-}
 
 //PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
@@ -186,10 +180,10 @@ router.post('/signup', function (req, res, next) {
     }).then(next).catch(function (err) {
       if (err.name == "SequelizeValidationError") {
         res.status(constants.HTTP.CODES.BAD_REQUEST)
-        res.json(response.formatResponse(constants.MESSAGES.GENERAL.FIELDS_INVALID));
+        res.json(response(constants.MESSAGES.GENERAL.FIELDS_INVALID));
       }else if(err.name =="SequelizeUniqueConstraintError"){
         res.status(constants.HTTP.CODES.BAD_REQUEST)
-        res.json(response.formatResponse(constants.MESSAGES.SIGNUP.EXIST));
+        res.json(response(constants.MESSAGES.SIGNUP.EXIST));
       }
       else{
         next(err);
@@ -197,7 +191,7 @@ router.post('/signup', function (req, res, next) {
     });
   } else {
     res.status(constants.HTTP.CODES.BAD_REQUEST)
-    res.json(response.formatResponse(constants.MESSAGES.GENERAL.FIELDS_INVALID));
+    res.json(response(constants.MESSAGES.GENERAL.FIELDS_INVALID));
   }
 }, respondWithToken);
 
@@ -220,11 +214,11 @@ router.post('/login', function (req, res, next) {
         next();
       } else {
         res.status(constants.HTTP.CODES.UNAUTHORIZED);
-        res.json(response.formatResponse(constants.MESSAGES.LOGIN.AUTH_FAILED));
+        res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
       }
     } else {
       res.status(constants.HTTP.CODES.UNAUTHORIZED);
-      res.json(response.formatResponse(constants.MESSAGES.LOGIN.AUTH_FAILED));
+      res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
     }
   }).catch(next);
 }, respondWithToken);
