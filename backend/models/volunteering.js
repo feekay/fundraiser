@@ -11,15 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     time: DataTypes.DATE,
     location: DataTypes.STRING
   }, {
-    classMethods: {
-      
-    },
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
-  Volunteering.associate= function (models) {
-        // associations can be defined here
-        models.Volunteering.belongsTo(models.Case);
-      }
+  Volunteering.associate = function (models) {
+    // associations can be defined here
+    models.Volunteering.belongsTo(models.Case);
+  }
   return Volunteering;
 };

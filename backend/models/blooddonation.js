@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     blood_group: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       validate: {
-        isIn:[literals.BLOOD_GROUPS.ALL]
+        isIn: [literals.BLOOD_GROUPS.ALL]
       }
     },
     location: DataTypes.STRING,
@@ -19,16 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     //latitude: DataTypes.STRING,
     //longnitude: DataTypes.STRING
   }, {
-    classMethods: {
-      
-    },
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
-  BloodDonation.associate= function (models) {
-        // associations can be defined here
-        models.BloodDonation.belongsTo(models.Case);
-
-      }
+  BloodDonation.associate = function (models) {
+    // associations can be defined here
+    models.BloodDonation.belongsTo(models.Case);
+  }
   return BloodDonation;
 };

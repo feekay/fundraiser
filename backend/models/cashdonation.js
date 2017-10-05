@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     classMethods: {
-      
+
     },
     getterMethods: {
       percent_raised() {
@@ -33,12 +33,12 @@ module.exports = (sequelize, DataTypes) => {
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
-  CashDonation.associate= function (models) {
-        // associations can be defined here
-        models.CashDonation.belongsTo(models.Case);
-        models.CashDonation.belongsToMany(models.User, {
-          through: models.Donation
-        });
-      }
+  CashDonation.associate = function (models) {
+    // associations can be defined here
+    models.CashDonation.belongsTo(models.Case);
+    models.CashDonation.belongsToMany(models.User, {
+      through: models.Donation
+    });
+  }
   return CashDonation;
 };

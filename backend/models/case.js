@@ -6,26 +6,26 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     contact: DataTypes.STRING,
     url: {
-      type:DataTypes.STRING,
-      validate:{
-        isUrl:true
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true
       }
     },
     active: {
-      type:DataTypes.BOOLEAN,
-      defaultValue:true
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     },
     verified: {
-      type:DataTypes.BOOLEAN,
-      defaultValue:false
-    }    
-  },{
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
+  }, {
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
-  Case.associate= function(models) {
-        // associations can be defined here
-        models.Case.belongsTo(models.User);
-      }
+  Case.associate = function (models) {
+    // associations can be defined here
+    models.Case.belongsTo(models.User);
+  }
   return Case;
 };

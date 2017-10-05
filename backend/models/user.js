@@ -8,21 +8,21 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    profile_photo:{
-      type:DataTypes.STRING,
+    profile_photo: {
+      type: DataTypes.STRING,
     },
     name: DataTypes.STRING,
     username: {
       type: DataTypes.STRING,
       unique: true,
-      validate:{
-        notIn:[
-          '@',' ', '.',':',';','?'
+      validate: {
+        notIn: [
+          '@', ' ', '.', ':', ';', '?'
         ]
       }
     },
     email: {
-      allowNull:false,
+      allowNull: false,
       type: DataTypes.STRING,
       unique: true,
       validate: {
@@ -61,17 +61,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   }, {
-    classMethods: {
-      
-    },
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
-  User.associate= function (models) {
-        // associations can be defined here
-        models.User.belongsToMany(models.CashDonation, {
-          through: models.Donation
-        });
-      }
+  User.associate = function (models) {
+    // associations can be defined here
+    models.User.belongsToMany(models.CashDonation, {
+      through: models.Donation
+    });
+  }
   return User;
 };
