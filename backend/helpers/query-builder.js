@@ -11,7 +11,6 @@ module.exports = {
     getFilter: function (str) {
         var filter = {};
         switch (str) {
-
             case 'trending':
                 break;
             case 'newest':
@@ -22,6 +21,16 @@ module.exports = {
                 break;
         }
     },
-    getOptionsFromQuery: function (query) {},
-    getOptions: function (str) {},
+    getOptionsFromQuery: function (query) {
+        options ={};
+        if(query.limit){
+            options[limit]=query[limit];
+        }
+        if(query.offset){
+            options[limit]=query[limit];            
+        }
+        if(query.sort){
+            options[sort]=query.sort;
+        }
+    }
 }

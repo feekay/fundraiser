@@ -14,11 +14,14 @@ var createUser = require('../helpers/create_user');
 var respondWithToken = require('../helpers/auth_token');
 var sign_token = require('../helpers/token');
 var secretConfig = require('../config/constants').SECRET;
-var user_params = require('../helpers/parameters').USER
+var user_params = require('../helpers/parameters').USER;
 //var mailer = require('');
+var multer =  require('multer');
+
 var Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
+var upload = multer({dest:'/profile'});
 
 //PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
@@ -199,12 +202,12 @@ router.post('/login', function (req, res, next) {
   var post = req.body;
   models.User.find({
     where: {
-      /*[Op.or]: [{
+      [Op.or]: [{
         username: post.username
       }, {
         email: post.username
-      }]*/
-      email: post.email
+      }]
+//      email: post.email
     }
   }).then(function (user) {
     if (user) {

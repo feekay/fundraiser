@@ -2,12 +2,14 @@
 module.exports = (sequelize, DataTypes) => {
   var Volunteering = sequelize.define('Volunteering', {
     id: {
-        allowNull: false,
-        defaultValue: DataTypes.UUID4,
-        primaryKey: true,
-        type: DataTypes.UUID
-      },
-    duration: DataTypes.STRING
+      allowNull: false,
+      defaultValue: DataTypes.UUID4,
+      primaryKey: true,
+      type: DataTypes.UUID
+    },
+    duration: DataTypes.STRING,
+    time: DataTypes.DATE,
+    location: DataTypes.STRING
   }, {
     classMethods: {
       associate: function (models) {

@@ -11,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
+    profile_photo:{
+      type:DataTypes.STRING,
+    },
     name: DataTypes.STRING,
     username: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      validate:{
+        [Op.notIn]:[
+          '@',' ', '.',':',';','?'
+        ]
+      }
     },
     email: {
       allowNull:false,

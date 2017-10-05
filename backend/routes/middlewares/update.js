@@ -5,7 +5,7 @@ var constants = require('../../config/constants');
 module.exports = {
 
     updateUserDetails: function (req, res, next) {
-        user = req.user.id;
+        var user = req.user.id;
 
         models.User.find({
             where: {
@@ -15,6 +15,12 @@ module.exports = {
             if (user) {
                 user.updateAttributes({
                     //TODO
+                    name: post.name || user.name,
+                    username: post.username || user.username,
+                    phone: post.phone || user.phone,
+                    account_no: post.account_no || user.account_no,
+                    bank: post.bank || user.bank,
+                    address: post.address || user.address
                 });
                 res.status(constants.HTTP.CODES.UPDATE);
                 res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
@@ -28,17 +34,38 @@ module.exports = {
     updateCashCase: function (req, res, next) {
         var post = req.body;
         var id = req.params;
+        var user = req.user.id;
+
         models.CashDonation.find({
             where: {
                 id: id
-            }
+                //case.owner : user
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (c) {
             if (c) {
-                c.updateAttributes({
-                    //TODO
+                Promise.all([
+                    c.Case.updateAttributes({
+                        title: post.title || c.Case.title,
+                        description: post.description || c.Case.description,
+                        contact: post.contact || c.Case.contact,
+                        url: post.url || c.Case.url,
+                    }),
+                    c.updateAttributes({
+                        category: c.category || post.category
+                    })
+                ]).then(function () {
+                    res.status(constants.HTTP.CODES.UPDATE);
+                    res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                 });
                 res.status(constants.HTTP.CODES.UPDATE);
                 res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));
@@ -51,11 +78,29 @@ module.exports = {
         models.BloodDonation.find({
             where: {
                 id: id
-            }
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (c) {
             if (c) {
-                c.updateAttributes({
-                    //TODO
+                Promise.all([
+                    c.Case.updateAttributes({
+                        title: post.title || c.Case.title,
+                        description: post.description || c.Case.description,
+                        contact: post.contact || c.Case.contact,
+                        url: post.url || c.Case.url,
+                    }),
+                    c.updateAttributes({
+                        blood_group: post.blood_group || c.blood_group,
+                        location: post.location || c.location
+                    })
+                ]).then(function () {
+                    res.status(constants.HTTP.CODES.UPDATE);
+                    res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                 });
                 res.status(constants.HTTP.CODES.UPDATE);
                 res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
@@ -71,14 +116,33 @@ module.exports = {
         models.Volunteering.find({
             where: {
                 id: id
-            }
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (c) {
             if (c) {
-                c.updateAttributes({
-                    //TODO
+                Promise.all([
+                    c.Case.updateAttributes({
+                        title: post.title || c.Case.title,
+                        description: post.description || c.Case.description,
+                        contact: post.contact || c.Case.contact,
+                        url: post.url || c.Case.url,
+                    }),
+                    c.updateAttributes({
+                        duration: post.duration || c.duration,
+                        time: post.time || c.time
+                    })
+                ]).then(function () {
+                    res.status(constants.HTTP.CODES.UPDATE);
+                    res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                 });
                 res.status(constants.HTTP.CODES.UPDATE);
                 res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));
@@ -90,7 +154,13 @@ module.exports = {
         models.CashDonation.find({
             where: {
                 id: param
-            }
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (cash) {
             var c = cash.getCase();
             c.updateAttributes({
@@ -105,7 +175,13 @@ module.exports = {
         models.BloodDonation.find({
             where: {
                 id: param
-            }
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (blood) {
             var c = blood.getCase();
             c.updateAttributes({
@@ -115,12 +191,18 @@ module.exports = {
             res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
         }).catch(next);
     },
-    closeVolunteering:function (req, res, next) {
+    closeVolunteering: function (req, res, next) {
         var param = req.params.cashid;
         models.Volunteering.find({
             where: {
                 id: param
-            }
+            },
+            include: [{
+                model: models.Case,
+                where: {
+                    //user_id : user                
+                }
+            }]
         }).then(function (v) {
             var c = v.getCase();
             c.updateAttributes({

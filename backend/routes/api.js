@@ -3,6 +3,8 @@ var router = express.Router();
 var passport = require('passport');
 var multer = require('multer');
 
+var upload = multer({dest:'/uploads'});
+
 var searchMiddlewares = require('./middlewares/search');
 var detailMiddlewares = require('./middlewares/details');
 var updateMiddlewares = require('./middlewares/update');
@@ -35,12 +37,15 @@ router.get('/find', searchMiddlewares.search,
 
 //------------------ADD CASE---------------//
 router.post('/cash', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     createMiddlewares.createCashCase);
 
 router.post('/blood', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     createMiddlewares.createBloodCase);
 
 router.post('/volunteer', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     createMiddlewares.createVolunteerCase);
 
 
@@ -79,12 +84,15 @@ router.post('/checkout', passport.authenticate('jwt', {session: false}),
 
 //------------------UPDATE-------------------//
 router.put('/cash/:cashid', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     updateMiddlewares.updateCashCase); //EDIT CASE
 
 router.put('/blood/:bloodid', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     updateMiddlewares.updateBloodDonation); //EDIT CASE
 
 router.put('/volunteer/:vid', passport.authenticate('jwt', {session: false}),
+    upload.any(),
     updateMiddlewares.updateVolunteering); //EDIT CASE
 
 router.post('/cash/:cashid/close', passport.authenticate('jwt', {session: false}),
@@ -99,6 +107,7 @@ router.post('/volunteer/:vid/close', passport.authenticate('jwt', { session: fal
 
 //------------------ABOUT ME-------------------//
 router.put('/profile', passport.authenticate('jwt', {session: false }),
+    upload.single(),
     updateMiddlewares.updateUserDetails); //EDIT PROFILE
 
 //router.get('/profile',); //RETURN USER PROFILE

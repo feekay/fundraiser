@@ -27,7 +27,14 @@ var obj = {
                 id: param
             },
             include: [{
-                model: models.Case
+                model: models.Case,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                },
+                include: [{
+                    model: models.User,
+                    attributes: ['id', 'name', 'username']
+                }]
             }]
         }).then(function (blood) {
             if (blood) {
@@ -46,13 +53,22 @@ var obj = {
                 id: param
             },
             include: [{
-                    model: models.Case
+                    model: models.Case,
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    },
+                    include: [{
+                        model: models.User,
+                        attributes: ['id', 'name', 'username']
+                    }]
                 },
                 {
                     model: models.User,
                     attributes: ['id', 'name'],
                     through: {
-                        where: { paid: true }
+                        where: {
+                            paid: true
+                        }
                     }
                 }
             ]
@@ -73,7 +89,14 @@ var obj = {
                 id: param
             },
             include: [{
-                model: models.Case
+                model: models.Case,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                },
+                include: [{
+                    model: models.User,
+                    attributes: ['id', 'name', 'username']
+                }]
             }]
         }).then(function (volunteer) {
             if (volunteer) {
@@ -85,18 +108,38 @@ var obj = {
             }
         }).catch(next);
     },
-    userDetails: function(req,res, next){
+    userDetails: function (req, res, next) {
         var param = req.user.id;
         models.User.find({
             where: {
                 id: param,
             },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
             include: [{
-                model: models.CashCase
+                model: models.CashDonation
             }]
-        }).then(function(u){
+        }).then(function (u) {
             res.status(constants.HTTP.CODES.SUCCESS);
-            res.json(response(constants.HTTP.CODES.SUCCESS,u));            
+            res.json(response(constants.HTTP.CODES.SUCCESS, u));
+        }).catch(next);
+    },
+    publicUserDetails: function (req, res, next) {
+        var param = req.user.id;
+        models.User.find({
+            where: {
+                id: param,
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone']
+            },
+            include: [{
+                model: models.CashDonation
+            }]
+        }).then(function (u) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(response(constants.HTTP.CODES.SUCCESS, u));
         }).catch(next);
     }
 };

@@ -8,15 +8,25 @@ var params = require('../../helpers/parameters');
 var obj = {
     createBloodCase: function (req, res, next) {
         var post = req.body;
+        var user_id= req.user.id;
         if (validate(params.CASE, post) && validate(params.BLOOD, post)) {
             sequelize.transaction(function (t) {
                 return models.Case.create({
-
+                        title: post.title,
+                        description:post.description,
+                        contact:post.contact,
+                        url:post.url,
+                        active:true,
+                        verified:false,
+                        user_id:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
+                        //c.setUser(user_id);
                         return models.BloodDonation.create({
-
+                            blood_group : post.blood_group,
+                            location:post.location,
+                           // cordinate:{post.lognitude,post.lattitude}
                         }, {
                             transaction: t
                         }).then(function (blood) {
@@ -40,12 +50,21 @@ var obj = {
         if (validate(params.CASE, post) && validate(params.CASH, post)) {
             sequelize.transaction(function (t) {
                 return models.Case.create({
-
+                        title: post.title,
+                        description:post.description,
+                        contact:post.contact,
+                        url:post.url,
+                        active:true,
+                        verified:false,
+                        user_id:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
+                        //c.setUser(user_id);
                         return models.CashDonation.create({
-
+                            amount_required:post.amount_required,
+                            amount_recieved:0,
+                            category : post.category
                         }, {
                             transaction: t
                         }).then(function (cash) {
@@ -69,12 +88,20 @@ var obj = {
         if (validate(params.CASE, post) && validate(params.VOLUNTEER, post)) {
             sequelize.transaction(function (t) {
                 return models.Case.create({
-
+                        title: post.title,
+                        description:post.description,
+                        contact:post.contact,
+                        url:post.url,
+                        active:true,
+                        verified:false,
+                        user_id:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
+                        //c.setUser(user_id);
                         return models.Volunteering.create({
-
+                            duration:post.length,
+                            time: post.time
                         }, {
                             transaction: t
                         }).then(function (volunteer) {

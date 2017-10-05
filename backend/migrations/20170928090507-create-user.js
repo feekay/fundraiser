@@ -7,6 +7,9 @@ module.exports = {
         type: Sequelize.UUID,
         primaryKey: true,
       },
+      profile_photo: {
+        type: Sequelize.STRING,
+      },
       name: {
         type: Sequelize.STRING
       },

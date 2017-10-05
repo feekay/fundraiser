@@ -8,6 +8,7 @@ var obj = {
     searchCashCases: function (filter, options = {}) {
         return models.CashDonation.findAll({
             where: filter,
+            include:[{ model : models.Case }],            
             limit: options.limit || constants.SEARCH_LIMIT,
             offset: options.offset || 0,
             order: options.sort
@@ -16,6 +17,7 @@ var obj = {
     searchBloodCases: function (filter, options = {}) {
         return models.BloodDonation.findAll({
             where: filter,
+            include:[{ model : models.Case }],
             limit: options.limit || constants.SEARCH_LIMIT,
             offset: options.offset || 0,
             order: options.sort
@@ -24,6 +26,7 @@ var obj = {
     searchVolunteeringCases: function (filter, options = {}) {
         return models.Volunteering.findAll({
             where: filter,
+            include:[{ model : models.Case }],            
             limit: options.limit || constants.SEARCH_LIMIT,
             offset: options.offset || 0,
             order: options.sort
@@ -54,8 +57,8 @@ var obj = {
         next();
     },
     fetch: function (req, res, next) {
-        req.filter = q.getFilter();
-        req.options = q.getOptions();
+        req.filter = q.getFilter(req.query.relevance);
+        req.options = q.getOptionsFromQuery(req.query);
         next();
     },
     getCashCases: function (req, res, next) {
