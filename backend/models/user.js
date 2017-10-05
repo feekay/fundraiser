@@ -1,8 +1,5 @@
 'use strict';
 var literals = require('../helpers/literals');
-var Sequelize = require('sequelize');
-
-const Op = Sequelize.Op;
 
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
@@ -19,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       validate:{
-        [Op.notIn]:[
+        notIn:[
           '@',' ', '.',':',';','?'
         ]
       }
@@ -29,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
       validate: {
-        [Op.isEmail]: true
+        isEmail: true
       }
     },
     password: DataTypes.STRING,
@@ -56,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     type: {
       type: DataTypes.STRING,
       validate: {
-        [Op.isIn]: [literals.ACCOUNTS.ALL]
+        isIn: [literals.ACCOUNTS.ALL]
       }
     },
     reset_time: {
@@ -65,15 +62,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     classMethods: {
-      associate: function (models) {
+      
+    },
+    charset: 'utf8',
+    collate: 'utf8_unicode_ci'
+  });
+  User.associate= function (models) {
         // associations can be defined here
         models.User.belongsToMany(models.CashDonation, {
           through: models.Donation
         });
       }
-    },
-    charset: 'utf8',
-    collate: 'utf8_unicode_ci'
-  });
   return User;
 };

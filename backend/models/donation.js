@@ -1,7 +1,4 @@
 'use strict';
-var Sequelize = require('sequelize');
-
-const Op = Sequelize.Op;
 
 module.exports = (sequelize, DataTypes) => {
   var Donation = sequelize.define('Donation', {
@@ -14,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     amount: {
       type:DataTypes.INTEGER,
       validate:{
-        [Op.min]:100
+        min:100
       }
     },
     paid: {

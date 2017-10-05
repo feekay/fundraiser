@@ -8,13 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        models.Reset.belongsTo(models.User);
-      }
+      
     },
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
+  Reset.associate= function(models) {
+        // associations can be defined here
+        models.Reset.belongsTo(models.User);
+      }
   return Reset;
 };

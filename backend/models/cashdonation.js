@@ -1,16 +1,11 @@
 'use strict';
 var literals = require('../helpers/literals');
-var Sequelize = require('sequelize');
-
-const Op = Sequelize.Op;
-
 module.exports = (sequelize, DataTypes) => {
   var CashDonation = sequelize.define('CashDonation', {
     id: {
-      allowNull: false,
-      defaultValue: DataTypes.UUID4,
+      type: DataTypes.UUID,
       primaryKey: true,
-      type: DataTypes.UUID
+      defaultValue: DataTypes.UUIDV4
     },
     amount_required: {
       type: DataTypes.FLOAT,
@@ -23,18 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     category: {
       type: DataTypes.STRING,
       validate: {
-        [Op.isIn]: [literals.CATEGORIES.ALL]
+        isIn: [literals.CATEGORIES.ALL]
       }
     },
   }, {
     classMethods: {
-      associate: function (models) {
-        // associations can be defined here
-        models.CashDonation.belongsTo(models.Case);
-        models.CashDonation.belongsToMany(models.User, {
-          through: models.Donation
-        });
-      }
+      
     },
     getterMethods: {
       percent_raised() {
@@ -44,5 +33,12 @@ module.exports = (sequelize, DataTypes) => {
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
+  CashDonation.associate= function (models) {
+        // associations can be defined here
+        models.CashDonation.belongsTo(models.Case);
+        models.CashDonation.belongsToMany(models.User, {
+          through: models.Donation
+        });
+      }
   return CashDonation;
 };

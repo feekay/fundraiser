@@ -1,7 +1,4 @@
 'use strict';
-var Sequelize = require('sequelize');
-
-const Op = Sequelize.Op;
 
 module.exports = (sequelize, DataTypes) => {
   var Case = sequelize.define('Case', {
@@ -11,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     url: {
       type:DataTypes.STRING,
       validate:{
-        [Op.isUrl]:true
+        isUrl:true
       }
     },
     active: {
@@ -22,15 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       defaultValue:false
     }    
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        models.Case.belongsTo(models.User);
-      }
-    },
+  },{
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
+  Case.associate= function(models) {
+        // associations can be defined here
+        models.Case.belongsTo(models.User);
+      }
   return Case;
 };

@@ -33,7 +33,7 @@ module.exports = {
 
     updateCashCase: function (req, res, next) {
         var post = req.body;
-        var id = req.params;
+        var id = req.params.cashid;
         var user = req.user.id;
 
         models.CashDonation.find({
@@ -74,7 +74,8 @@ module.exports = {
     },
     updateBloodDonation: function (req, res, next) {
         var post = req.body;
-        var id = req.params;
+        var id = req.params.bloodid;
+        user= req.user.id;
         models.BloodDonation.find({
             where: {
                 id: id
@@ -82,13 +83,13 @@ module.exports = {
             include: [{
                 model: models.Case,
                 where: {
-                    //user_id : user                
+                    UserId : user                
                 }
             }]
         }).then(function (c) {
             if (c) {
-                Promise.all([
-                    c.Case.updateAttributes({
+                
+                    Promise.all([c.Case.updateAttributes({
                         title: post.title || c.Case.title,
                         description: post.description || c.Case.description,
                         contact: post.contact || c.Case.contact,
@@ -102,8 +103,7 @@ module.exports = {
                     res.status(constants.HTTP.CODES.UPDATE);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                 });
-                res.status(constants.HTTP.CODES.UPDATE);
-                res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+              
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));
@@ -112,7 +112,7 @@ module.exports = {
     },
     updateVolunteering: function (req, res, next) {
         var post = req.body;
-        var id = req.params;
+        var id = req.params.vid;
         models.Volunteering.find({
             where: {
                 id: id
@@ -171,7 +171,7 @@ module.exports = {
         }).catch(next);
     },
     closeBloodCase: function (req, res, next) {
-        var param = req.params.cashid;
+        var param = req.params.bloodid;
         models.BloodDonation.find({
             where: {
                 id: param
@@ -192,7 +192,7 @@ module.exports = {
         }).catch(next);
     },
     closeVolunteering: function (req, res, next) {
-        var param = req.params.cashid;
+        var param = req.params.vid;
         models.Volunteering.find({
             where: {
                 id: param

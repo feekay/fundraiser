@@ -5,7 +5,7 @@ var constants = require('../../config/constants');
 var obj = {
 
     caseDetails: function (id) {
-        var param = req.param;
+        var param = req.params.id;
         models.Case.find({
             where: {
                 id: param
@@ -21,7 +21,7 @@ var obj = {
         }).catch(next);
     },
     bloodCaseDetails: function (req, res, next) {
-        var param = req.params;
+        var param = req.params.bloodid;
         models.BloodDonation.find({
             where: {
                 id: param
@@ -47,7 +47,7 @@ var obj = {
         }).catch(next);
     },
     cashCaseDetails: function (req, res, next) {
-        var param = req.param;
+        var param = req.params.cashid;
         models.CashDonation.find({
             where: {
                 id: param
@@ -83,7 +83,7 @@ var obj = {
         }).catch(next);
     },
     volunteeingCaseDetails: function (req, res, next) {
-        var param = req.param;
+        var param = req.params.vid;
         models.Volunteering.find({
             where: {
                 id: param

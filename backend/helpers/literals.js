@@ -6,7 +6,7 @@ module.exports ={
         LOCAL:'locl'
     },
     CATEGORIES:{
-        ALL:[]
+        ALL:["RANDOM"]
     },
     BLOOD_GROUPS:{
         ALL:['a+','b+','ab+','o+','a-','b-','ab-','o-']

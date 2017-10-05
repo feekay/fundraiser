@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var multer = require('multer');
 
-var upload = multer({dest:'/uploads'});
+var upload = multer({dest:'public/uploads'});
 
 var searchMiddlewares = require('./middlewares/search');
 var detailMiddlewares = require('./middlewares/details');

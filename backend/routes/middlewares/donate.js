@@ -9,7 +9,7 @@ var obj = {
         next();
     },
     caseDonations: function (req, res, next) {
-        var param = req.params;
+        var param = req.params.cashid;
         models.CashDonation.find({
             where: {
                 id: param,

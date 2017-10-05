@@ -1,16 +1,16 @@
 var models = require('../../models');
-var sequelize = require('sequelize');
 var constants = require('../../config/constants');
 var response = require('../../helpers/response');
 var validate = require('../../helpers/validate');
 var params = require('../../helpers/parameters');
 
+//models.transaction();
 var obj = {
     createBloodCase: function (req, res, next) {
         var post = req.body;
         var user_id= req.user.id;
         if (validate(params.CASE, post) && validate(params.BLOOD, post)) {
-            sequelize.transaction(function (t) {
+            models.sequelize.transaction(function (t) {
                 return models.Case.create({
                         title: post.title,
                         description:post.description,
@@ -18,11 +18,11 @@ var obj = {
                         url:post.url,
                         active:true,
                         verified:false,
-                        user_id:user_id
+                        //userId:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
-                        //c.setUser(user_id);
+                        c.setUser(user_id);
                         return models.BloodDonation.create({
                             blood_group : post.blood_group,
                             location:post.location,
@@ -46,9 +46,10 @@ var obj = {
     },
 
     createCashCase: function (req, res, next) {
+        var user_id= req.user.id;
         var post = req.body;
         if (validate(params.CASE, post) && validate(params.CASH, post)) {
-            sequelize.transaction(function (t) {
+            models.sequelize.transaction(function (t) {
                 return models.Case.create({
                         title: post.title,
                         description:post.description,
@@ -56,11 +57,11 @@ var obj = {
                         url:post.url,
                         active:true,
                         verified:false,
-                        user_id:user_id
+                       // user_id:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
-                        //c.setUser(user_id);
+                        c.setUser(user_id);
                         return models.CashDonation.create({
                             amount_required:post.amount_required,
                             amount_recieved:0,
@@ -69,12 +70,13 @@ var obj = {
                             transaction: t
                         }).then(function (cash) {
                             cash.setCase(c);
+                            res.status(constants.HTTP.CODES.CREATED);
+                            res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                         }).catch(next);
                     })
                     .catch(next);
             }).then(function (result) {
-                res.status(constants.HTTP.CODES.CREATED);
-                res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+                
             }).catch(next);
 
         } else {
@@ -84,9 +86,10 @@ var obj = {
     },
 
     createVolunteerCase:function (req, res, next) {
+        var user_id= req.user.id;
         var post = req.body;
         if (validate(params.CASE, post) && validate(params.VOLUNTEER, post)) {
-            sequelize.transaction(function (t) {
+            models.sequelize.transaction(function (t) {
                 return models.Case.create({
                         title: post.title,
                         description:post.description,
@@ -94,11 +97,11 @@ var obj = {
                         url:post.url,
                         active:true,
                         verified:false,
-                        user_id:user_id
+                        //user_id:user_id
                     }, {
                         transaction: t
                     }).then(function (c) {
-                        //c.setUser(user_id);
+                        c.setUser(user_id);
                         return models.Volunteering.create({
                             duration:post.length,
                             time: post.time

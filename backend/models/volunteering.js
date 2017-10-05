@@ -12,13 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     location: DataTypes.STRING
   }, {
     classMethods: {
-      associate: function (models) {
-        // associations can be defined here
-        models.Volunteering.belongsTo(models.Case);
-      }
+      
     },
     charset: 'utf8',
     collate: 'utf8_unicode_ci'
   });
+  Volunteering.associate= function (models) {
+        // associations can be defined here
+        models.Volunteering.belongsTo(models.Case);
+      }
   return Volunteering;
 };

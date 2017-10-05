@@ -21,7 +21,7 @@ var multer =  require('multer');
 var Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
-var upload = multer({dest:'/profile'});
+var upload = multer({dest:'public/profile'});
 
 //PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
@@ -182,6 +182,7 @@ router.post('/signup', function (req, res, next) {
       }
     }).then(next).catch(function (err) {
       if (err.name == "SequelizeValidationError") {
+        console.log(err);
         res.status(constants.HTTP.CODES.BAD_REQUEST)
         res.json(response(constants.MESSAGES.GENERAL.FIELDS_INVALID));
       }else if(err.name =="SequelizeUniqueConstraintError"){
@@ -202,16 +203,17 @@ router.post('/login', function (req, res, next) {
   var post = req.body;
   models.User.find({
     where: {
-      [Op.or]: [{
-        username: post.username
-      }, {
-        email: post.username
-      }]
-//      email: post.email
+      // [Op.or]: [{
+      //   username: post.username
+      // }, {
+      //   email: post.username
+      // }]
+      email: post.email
     }
   }).then(function (user) {
     if (user) {
       if (hasher.compare(post.password, user.password)) {
+      console.log(post.password,user.password);
         req.auth = user.id;
         res.status(constants.HTTP.CODES.SUCCESS);
         next();
@@ -220,6 +222,7 @@ router.post('/login', function (req, res, next) {
         res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
       }
     } else {
+      console.log('a');
       res.status(constants.HTTP.CODES.UNAUTHORIZED);
       res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
     }
