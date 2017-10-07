@@ -4,8 +4,8 @@ var constants = require('../../config/constants');
 var response = require('../../helpers/query-builder');
 
 var obj = {
-    processTransaction:function(req, res, next){
-        req.amount= 100;//SET THIS VALUE AFTER PROCESSING
+    processTransaction: function (req, res, next) {
+        req.amount = 100; //SET THIS VALUE AFTER PROCESSING
         next();
     },
     caseDonations: function (req, res, next) {
@@ -21,12 +21,14 @@ var obj = {
                     where: {
                         paid: true
                     }
-                }
+                },
+                limit:5,
+                offset:0
             }]
         }).then(function (c) {
             if (c) {
                 res.status(constants.HTTP.CODES.SUCCESS);
-                res.json(response(constants.HTTP.CODES.SUCCESS, c));
+                res.json(response(constants.HTTP.CODES.SUCCESS, c.Users));
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));
@@ -101,25 +103,46 @@ var obj = {
             res.json(constants.MESSAGES.GENERAL.FAILED);
         }).catch(next);
     },
-    commitToVolunteering:function(req, res, next){
+    commitToVolunteering: function (req, res, next) {
 
     },
-    subscribeVolunteer:function(req, res, next){
-
+    subscribeVolunteer: function (req, res, next) {
+        var post = req.body;
+        var user = req.user.id;
+        models.User.find({
+            where: {
+                id: user
+            }
+        }).then(function (user) {
+            if (user) {
+                models.Volunteer.create({
+                    location: post.location,
+                    interest: post.interest
+                }).then(function (volunteer) {
+                    volunteer.setUser(user);
+                    res.status(constants.HTTP.CODES.CREATED);
+                    res.json(constants.MESSAGES.GENERAL.SUCCESS);
+                }).catch(next);
+            }
+            res.status(constants.HTTP.CODES.BAD_REQUEST);
+            res.json(constants.MESSAGES.GENERAL.FAILED);
+        }).catch(next);
     },
-    checkout:function(req, res, next){
+    checkout: function (req, res, next) {
         //PROCESS TRANSACTION
         var user = req.user.id;
         var post = req.body;
         var amount = req.amount;
         models.User.find({
-            id:user
-        }).then(function(user){
+            id: user
+        }).then(function (user) {
             donations = user.getCashDonations();
-            donations.forEach(function(user) {
-                if(!donation.paid && donation.amount<=amount){
-                    donation.updateAttributes({paid:true});
-                    amount -= donation.amount; 
+            donations.forEach(function (user) {
+                if (!donation.paid && donation.amount <= amount) {
+                    donation.updateAttributes({
+                        paid: true
+                    });
+                    amount -= donation.amount;
                 }
             }, this);
 

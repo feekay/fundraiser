@@ -34,6 +34,7 @@ router.get('/volunteer', searchMiddlewares.getVoluenteeringCases,
 router.get('/find', searchMiddlewares.search,
     searchMiddlewares.query);
 
+router.get('/cash/:cashid/donations', donateMiddlewares.caseDonations);
 
 //------------------ADD CASE---------------//
 router.post('/cash', passport.authenticate('jwt', {session: false}),
@@ -48,6 +49,8 @@ router.post('/volunteer', passport.authenticate('jwt', {session: false}),
     upload.any(),
     createMiddlewares.createVolunteerCase);
 
+router.post('/case/comment',passport.authenticate('jwt', {session: false}),
+    createMiddlewares.postComment);
 
 //------------------DETAILS----------------//
 router.get('/cash/:cashid', detailMiddlewares.cashCaseDetails);
