@@ -7,6 +7,7 @@ module.exports = {
             [Op.regexp]: '[[:<:]]' + query.key + '[[:>:]]'
         };
         filter['category']=query.category;
+        return filter;
     },
     getFilter: function (str) {
         var filter = {};
@@ -20,6 +21,7 @@ module.exports = {
             case 'closest':
                 break;
         }
+        return filter;
     },
     getOptionsFromQuery: function (query) {
         options ={};
@@ -32,5 +34,6 @@ module.exports = {
         if(query.sort){
             options[sort]=query.sort;
         }
+        return options;
     }
 }

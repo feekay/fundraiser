@@ -16,6 +16,7 @@ var paramMiddlewares = require('./middlewares/params');
 router.param('cashid', paramMiddlewares.cashId);
 router.param('bloodid', paramMiddlewares.bloodId);
 router.param('vid', paramMiddlewares.volunteerId);
+router.param('userid',paramMiddlewares.userId);
 
 
 //------------FETCH AND SEARCH CASES---------//
@@ -27,7 +28,7 @@ router.get('/blood', searchMiddlewares.getBloodCases,
     searchMiddlewares.fetch,
     searchMiddlewares.query);
 
-router.get('/volunteer', searchMiddlewares.getVoluenteeringCases,
+router.get('/volunteer', searchMiddlewares.getVolunteeringCases,
     searchMiddlewares.fetch,
     searchMiddlewares.query);
 
@@ -113,7 +114,7 @@ router.put('/profile', passport.authenticate('jwt', {session: false }),
     upload.single(),
     updateMiddlewares.updateUserDetails); //EDIT PROFILE
 
-//router.get('/profile',); //RETURN USER PROFILE
+router.get('/:userid/profile',detailMiddlewares.publicUserDetails); //RETURN USER PROFILE
 
 router.get('/profile/activity', passport.authenticate('jwt', {session: false}),
     detailMiddlewares.userDetails);

@@ -3,10 +3,9 @@
 module.exports = (sequelize, DataTypes) => {
   var Donation = sequelize.define('Donation', {
     id: {
-      allowNull: false,
-      defaultValue: DataTypes.UUID4,
+      type: DataTypes.UUID,
       primaryKey: true,
-      type: DataTypes.UUID
+      defaultValue: DataTypes.UUIDV4
     },
     amount: {
       type: DataTypes.INTEGER,

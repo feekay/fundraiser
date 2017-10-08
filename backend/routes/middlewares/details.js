@@ -115,7 +115,7 @@ var obj = {
                 id: param,
             },
             attributes: {
-                exclude: ['createdAt', 'updatedAt']
+                exclude: ['createdAt', 'updatedAt','password','type','reset_time']
             },
             include: [{
                 model: models.CashDonation
@@ -126,13 +126,13 @@ var obj = {
         }).catch(next);
     },
     publicUserDetails: function (req, res, next) {
-        var param = req.user.id;
+        var param = req.params.userid;
         models.User.find({
             where: {
                 id: param,
             },
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone']
+                exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone','password','type','reset_time']
             },
             include: [{
                 model: models.CashDonation

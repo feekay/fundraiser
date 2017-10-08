@@ -8,4 +8,7 @@ module.exports ={
     bloodId:function(req, res, next, bloodid){
         next();
     },
+    userId:function(req, res, next, userid){
+        next();
+    },
 };

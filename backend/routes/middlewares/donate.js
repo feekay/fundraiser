@@ -1,11 +1,11 @@
 var models = require('../../models');
 var response = require('../../helpers/response');
 var constants = require('../../config/constants');
-var response = require('../../helpers/query-builder');
+var q = require('../../helpers/query-builder');
 
 var obj = {
     processTransaction: function (req, res, next) {
-        req.amount = 100; //SET THIS VALUE AFTER PROCESSING
+        req.amount = 400; //SET THIS VALUE AFTER PROCESSING
         next();
     },
     caseDonations: function (req, res, next) {
@@ -22,8 +22,8 @@ var obj = {
                         paid: true
                     }
                 },
-                limit:5,
-                offset:0
+                limit: 5,
+                offset: 0
             }]
         }).then(function (c) {
             if (c) {
@@ -37,8 +37,8 @@ var obj = {
     },
     commitToDonate: function (req, res, next) {
         var post = req.body;
-        var user = req.user.id;
-        var caseId = req.query.cashid;
+        var user = req.user;
+        var caseId = req.params.cashid;
 
         models.CashDonation.find({
             where: {
@@ -46,22 +46,24 @@ var obj = {
             }
         }).then(function (c) {
             if (c) {
-                c.addUser(user, {
+                console.log(post.amount);
+                c.addUser(user,  {through:{
                     amount: post.amount,
                     paid: false
-                });
-                res.status(constants.HTTP.CODES.SUCCESS);
-                res.json(constants.MESSAGES.GENERAL.SUCCESS);
+                }}).then(function () {
+                    res.status(constants.HTTP.CODES.SUCCESS);
+                    res.json(constants.MESSAGES.GENERAL.SUCCESS);
+                }).catch(next);
             } else {
-                res.status(constants.HTTP.CODES.BAD_REQUEST);
-                res.json(constants.MESSAGES.GENERAL.FAILED);
+                res.status(constants.HTTP.CODES.NOT_FOUND);
+                res.json(constants.MESSAGES.GENERAL.NOT_FOUND);
             }
         }).catch(next);
     },
     donateToCase: function (req, res, next) {
         var post = req.body;
-        var user = req.user.id;
-        var caseId = req.query.cashid;
+        var user = req.user;
+        var caseId = req.params.cashid;
 
         models.CashDonation.find({
             where: {
@@ -69,12 +71,16 @@ var obj = {
             }
         }).then(function (c) {
             if (c) {
-                c.addUser(user, {
+                c.addUser(user, {through:{
                     amount: req.amount,
                     paid: true
-                });
-                res.status(constants.HTTP.CODES.SUCCESS);
-                res.json(constants.MESSAGES.GENERAL.SUCCESS);
+                }}).then(function () {
+                    c.updateAttributes({
+                        amount_recieved: c.amount_recieved + req.amount
+                    });
+                    res.status(constants.HTTP.CODES.SUCCESS);
+                    res.json(constants.MESSAGES.GENERAL.SUCCESS);
+                }).catch(next);
             } else {
                 res.status(constants.HTTP.CODES.BAD_REQUEST);
                 res.json(constants.MESSAGES.GENERAL.FAILED);
@@ -84,7 +90,6 @@ var obj = {
     subscribeBloodDonor: function (req, res, next) {
         var post = req.body;
         var user = req.user.id;
-
         models.User.find({
             where: {
                 id: user
@@ -98,9 +103,10 @@ var obj = {
                     res.status(constants.HTTP.CODES.CREATED);
                     res.json(constants.MESSAGES.GENERAL.SUCCESS);
                 }).catch(next);
+            } else {
+                res.status(constants.HTTP.CODES.BAD_REQUEST);
+                res.json(constants.MESSAGES.GENERAL.FAILED);
             }
-            res.status(constants.HTTP.CODES.BAD_REQUEST);
-            res.json(constants.MESSAGES.GENERAL.FAILED);
         }).catch(next);
     },
     commitToVolunteering: function (req, res, next) {
@@ -136,16 +142,24 @@ var obj = {
         models.User.find({
             id: user
         }).then(function (user) {
-            donations = user.getCashDonations();
-            donations.forEach(function (user) {
-                if (!donation.paid && donation.amount <= amount) {
-                    donation.updateAttributes({
-                        paid: true
-                    });
-                    amount -= donation.amount;
-                }
-            }, this);
-
+            user.getCashDonations().then(function (donations) {
+                for(cashCase of donations){
+                    if (!cashCase.Donation.paid && cashCase.Donation.amount <= amount) {
+                        cashCase.Donation.updateAttributes({
+                            paid: true
+                        });
+                        cashCase.updateAttributes({
+                            amount_recieved:    cashCase.amount_recieved+cashCase.Donation.amount
+                        }).catch(function(err){
+                            console.log(err);
+                        })
+                        
+                        amount -= cashCase.Donation.amount;
+                    }
+                };
+                res.status(constants.HTTP.CODES.SUCCESS);
+                res.json(response(constants.MESSAGES.GENERAL.SUCCESS, { balance: amount }));
+            }).catch(next);
         }).catch(next);
     }
 };

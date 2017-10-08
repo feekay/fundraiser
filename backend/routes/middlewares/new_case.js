@@ -133,8 +133,8 @@ var obj = {
                 models.Comment.create({
                     text: post.text,
                     likes: 0,
-                    userId: user,
-                    caseId:c.id
+                    UserId: user,
+                    CaseId:c.id
                 }).then(function(comment){
                     res.status(constants.HTTP.CODES.CREATED);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS))
