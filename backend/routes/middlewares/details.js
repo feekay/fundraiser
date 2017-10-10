@@ -34,6 +34,8 @@ var obj = {
                 include: [{
                     model: models.User,
                     attributes: ['id', 'name', 'username']
+                }, {
+                    model: models.Comment
                 }]
             }]
         }).then(function (blood) {
@@ -53,24 +55,24 @@ var obj = {
                 id: param
             },
             include: [{
-                    model: models.Case,
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt']
-                    },
-                    include: [{
-                        model: models.User,
-                        attributes: ['id', 'name', 'username']
-                    }]
+                model: models.Case,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
                 },
-                {
+                include: [{
                     model: models.User,
-                    attributes: ['id', 'name'],
-                    through: {
-                        where: {
-                            paid: true
-                        }
-                    }
+                    attributes: ['id', 'name', 'username']
+                }, {
+                    model: models.Comment
+                }]
+            },
+            {
+                model: models.Donation,
+                /*where: {
+                        paid: true
                 }
+                */
+            }
             ]
         }).then(function (cash) {
             if (cash) {
@@ -96,6 +98,8 @@ var obj = {
                 include: [{
                     model: models.User,
                     attributes: ['id', 'name', 'username']
+                }, {
+                    model: models.Comment
                 }]
             }]
         }).then(function (volunteer) {
@@ -115,10 +119,10 @@ var obj = {
                 id: param,
             },
             attributes: {
-                exclude: ['createdAt', 'updatedAt','password','type','reset_time']
+                exclude: ['createdAt', 'updatedAt', 'password', 'type', 'reset_time']
             },
             include: [{
-                model: models.CashDonation
+                model: models.Donation
             }]
         }).then(function (u) {
             res.status(constants.HTTP.CODES.SUCCESS);
@@ -132,10 +136,10 @@ var obj = {
                 id: param,
             },
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone','password','type','reset_time']
+                exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone', 'password', 'type', 'reset_time']
             },
             include: [{
-                model: models.CashDonation
+                model: models.Donation
             }]
         }).then(function (u) {
             res.status(constants.HTTP.CODES.SUCCESS);

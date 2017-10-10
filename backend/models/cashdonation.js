@@ -36,9 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   CashDonation.associate = function (models) {
     // associations can be defined here
     models.CashDonation.belongsTo(models.Case);
-    models.CashDonation.belongsToMany(models.User, {
-      through: models.Donation
-    });
+    models.CashDonation.hasMany(models.Donation);
   }
   return CashDonation;
 };

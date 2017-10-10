@@ -15,13 +15,11 @@ var obj = {
                 id: param,
             },
             include: [{
-                model: models.User,
-                attributes: ['id', 'name'],
-                through: {
-                    where: {
-                        paid: true
-                    }
-                },
+                model: models.Donation,
+                /*
+                                where: {
+                                    paid: true
+                                },*/
                 limit: 5,
                 offset: 0
             }]
@@ -46,11 +44,12 @@ var obj = {
             }
         }).then(function (c) {
             if (c) {
-                console.log(post.amount);
-                c.addUser(user,  {through:{
+                models.Donation.create({
                     amount: post.amount,
-                    paid: false
-                }}).then(function () {
+                    paid: false,
+                    UserId: user.id,
+                    CashDonationId: caseId
+                }).then(function (d) {
                     res.status(constants.HTTP.CODES.SUCCESS);
                     res.json(constants.MESSAGES.GENERAL.SUCCESS);
                 }).catch(next);
@@ -64,17 +63,18 @@ var obj = {
         var post = req.body;
         var user = req.user;
         var caseId = req.params.cashid;
-
         models.CashDonation.find({
             where: {
                 id: caseId
             }
         }).then(function (c) {
             if (c) {
-                c.addUser(user, {through:{
-                    amount: req.amount,
-                    paid: true
-                }}).then(function () {
+                models.Donation.create({
+                    amount: post.amount,
+                    paid: true,
+                    UserId: user.id,
+                    CashDonationId: caseId
+                }).then(function () {
                     c.updateAttributes({
                         amount_recieved: c.amount_recieved + req.amount
                     });
@@ -142,19 +142,22 @@ var obj = {
         models.User.find({
             id: user
         }).then(function (user) {
-            user.getCashDonations().then(function (donations) {
-                for(cashCase of donations){
-                    if (!cashCase.Donation.paid && cashCase.Donation.amount <= amount) {
-                        cashCase.Donation.updateAttributes({
+            var i = 0;
+            user.getDonations().then(function (donations) {
+                for (donation of donations) {
+                    if (!donation.paid && donation.amount <= amount) {
+                        donation.updateAttributes({
                             paid: true
-                        });
-                        cashCase.updateAttributes({
-                            amount_recieved:    cashCase.amount_recieved+cashCase.Donation.amount
-                        }).catch(function(err){
-                            console.log(err);
-                        })
-                        
-                        amount -= cashCase.Donation.amount;
+                        }).then(function (d) {
+                            d.getCashDonation().then(function (cash) {
+                                cash.updateAttributes({
+                                    amount_recieved: cash.amount_recieved + d.amount
+                                }).catch(function (err) {
+                                    console.log(err);
+                                })
+                            });
+                        }).catch(next);
+                        amount -= donation.amount;
                     }
                 };
                 res.status(constants.HTTP.CODES.SUCCESS);

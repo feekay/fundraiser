@@ -110,13 +110,15 @@ router.post('/volunteer/:vid/close', passport.authenticate('jwt', { session: fal
 
 
 //------------------ABOUT ME-------------------//
-router.put('/profile', passport.authenticate('jwt', {session: false }),
+router.put('/profile/me', passport.authenticate('jwt', {session: false }),
     upload.single(),
     updateMiddlewares.updateUserDetails); //EDIT PROFILE
 
-router.get('/:userid/profile',detailMiddlewares.publicUserDetails); //RETURN USER PROFILE
-
-router.get('/profile/activity', passport.authenticate('jwt', {session: false}),
+router.get('/profile/me', passport.authenticate('jwt', {session: false}),
     detailMiddlewares.userDetails);
+
+router.get('/profile/:userid',detailMiddlewares.publicUserDetails); //RETURN USER PROFILE
+
+
 
 module.exports = router;

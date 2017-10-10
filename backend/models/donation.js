@@ -28,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   });
   Donation.associate = function (models) {
     // associations can be defined here
+    models.Donation.belongsTo(models.User);
+    models.Donation.belongsTo(models.CashDonation);
   }
   return Donation;
 };
