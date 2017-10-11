@@ -6,7 +6,9 @@ module.exports = {
 
     updateUserDetails: function (req, res, next) {
         var user = req.user.id;
-
+       // console.log(req.file);
+        var post= req.body;
+        console.log(post);
         models.User.find({
             where: {
                 id: user
@@ -21,9 +23,11 @@ module.exports = {
                     account_no: post.account_no || user.account_no,
                     bank: post.bank || user.bank,
                     address: post.address || user.address
-                });
-                res.status(constants.HTTP.CODES.UPDATE);
-                res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+                }).then(function(){
+                    res.status(constants.HTTP.CODES.UPDATE);
+                    res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+                }).catch(next);
+                
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));

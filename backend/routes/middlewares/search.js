@@ -34,7 +34,6 @@ var obj = {};
     },
     obj.query= function (req, res, next) {
         var func = null;
-        console.log(this.x);
         switch (req.key) {
             case "blood":
                 func = obj.searchBloodCases;

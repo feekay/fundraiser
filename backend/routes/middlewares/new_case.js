@@ -76,7 +76,6 @@ var obj = {
                     })
                     .catch(next);
             }).then(function (result) {
-
             }).catch(next);
 
         } else {

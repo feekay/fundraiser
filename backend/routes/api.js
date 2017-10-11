@@ -4,6 +4,7 @@ var passport = require('passport');
 var multer = require('multer');
 
 var upload = multer({dest:'public/uploads'});
+var profileUpload = multer({ dest: 'public/profile' });
 
 var searchMiddlewares = require('./middlewares/search');
 var detailMiddlewares = require('./middlewares/details');
@@ -39,15 +40,15 @@ router.get('/cash/:cashid/donations', donateMiddlewares.caseDonations);
 
 //------------------ADD CASE---------------//
 router.post('/cash', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos',8),
     createMiddlewares.createCashCase);
 
 router.post('/blood', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos',8),
     createMiddlewares.createBloodCase);
 
 router.post('/volunteer', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos',8),
     createMiddlewares.createVolunteerCase);
 
 router.post('/case/comment',passport.authenticate('jwt', {session: false}),
@@ -111,7 +112,7 @@ router.post('/volunteer/:vid/close', passport.authenticate('jwt', { session: fal
 
 //------------------ABOUT ME-------------------//
 router.put('/profile/me', passport.authenticate('jwt', {session: false }),
-    upload.single(),
+    profileUpload.single('profilePhoto'),
     updateMiddlewares.updateUserDetails); //EDIT PROFILE
 
 router.get('/profile/me', passport.authenticate('jwt', {session: false}),

@@ -16,12 +16,10 @@ var sign_token = require('../helpers/token');
 var secretConfig = require('../config/constants').SECRET;
 var user_params = require('../helpers/parameters').USER;
 //var mailer = require('');
-var multer =  require('multer');
 
 var Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
-var upload = multer({dest:'public/profile'});
 
 //PASSWORD RESET TOKEN PARAMETER
 router.param('token', function (req, res, next, token) {
@@ -74,7 +72,7 @@ router.get('/reset/:token', function (req, res, next) {
 //HANDLE RESET REQUEST
 router.post('/reset/:token', function (req, res, next) {
   //RESET THE PASSWORD FOR THE USER IN REQUEST
-  var u= req.user;
+  var u = req.user;
   var post = req.body;
   models.User.find({
     where: {
@@ -86,11 +84,11 @@ router.post('/reset/:token', function (req, res, next) {
       user.updateAttributes({
         password: hasher.hash(post.password),
         reset_time: new Date()
-      }).then(function(){
-        models.Reset.find({where:{key:req.key}}).then(function(r){
-          if(r){
+      }).then(function () {
+        models.Reset.find({ where: { key: req.key } }).then(function (r) {
+          if (r) {
             r.updateAttributes({
-              valid:false
+              valid: false
             });
           }
           next();
@@ -136,7 +134,7 @@ router.post('/forget', function (req, res, next) {
     } else {
       //mailer.sendMail('malicious-template');      
       res.sendStatus(constants.HTTP.CODES.SUCCESS);
-        //res.render('redirect-mail');
+      //res.render('redirect-mail');
     }
   }).catch(next);
 });
@@ -182,14 +180,13 @@ router.post('/signup', function (req, res, next) {
       }
     }).then(next).catch(function (err) {
       if (err.name == "SequelizeValidationError") {
-        console.log(err);
         res.status(constants.HTTP.CODES.BAD_REQUEST)
         res.json(response(constants.MESSAGES.GENERAL.FIELDS_INVALID));
-      }else if(err.name =="SequelizeUniqueConstraintError"){
+      } else if (err.name == "SequelizeUniqueConstraintError") {
         res.status(constants.HTTP.CODES.BAD_REQUEST)
         res.json(response(constants.MESSAGES.SIGNUP.EXIST));
       }
-      else{
+      else {
         next(err);
       }
     });
@@ -203,17 +200,16 @@ router.post('/login', function (req, res, next) {
   var post = req.body;
   models.User.find({
     where: {
-      // [Op.or]: [{
-      //   username: post.username
-      // }, {
-      //   email: post.username
-      // }]
-      email: post.email
+      [Op.or]: [{
+        username: post.username
+      }, {
+        email: post.username
+      }]
+      //email: post.email
     }
   }).then(function (user) {
     if (user) {
       if (hasher.compare(post.password, user.password)) {
-      console.log(post.password,user.password);
         req.auth = user.id;
         res.status(constants.HTTP.CODES.SUCCESS);
         next();
@@ -222,11 +218,17 @@ router.post('/login', function (req, res, next) {
         res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
       }
     } else {
-      console.log('a');
       res.status(constants.HTTP.CODES.UNAUTHORIZED);
       res.json(response(constants.MESSAGES.LOGIN.AUTH_FAILED));
     }
   }).catch(next);
 }, respondWithToken);
+
+router.get('/status', passport.authenticate('jwt', { session: false }),
+  function (req, res, next) {
+    res.status(constants.HTTP.CODES.SUCCESS);
+    res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
+  }
+);
 
 module.exports = router;

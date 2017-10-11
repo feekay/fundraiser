@@ -152,9 +152,7 @@ var obj = {
                             d.getCashDonation().then(function (cash) {
                                 cash.updateAttributes({
                                     amount_recieved: cash.amount_recieved + d.amount
-                                }).catch(function (err) {
-                                    console.log(err);
-                                })
+                                }).catch(next);
                             });
                         }).catch(next);
                         amount -= donation.amount;
