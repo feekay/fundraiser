@@ -1,0 +1,11 @@
+body{
+    color:#eee;
+}
+h1,.h1,h2,.h2,p,h3,.h3{
+    color:#eee;
+    
+}
+
+h1,.h1,h2,.h2,p{
+    font-size: 1.5em;
+}

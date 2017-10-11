@@ -1,0 +1,241 @@
+ <div class="alert alert-danger" *ngIf="errorMessage"> {{errorMessage}}</div>
+
+<div class="card mb-3">
+  <div class="card-header">
+
+    <i class="fa fa-table"></i> Information
+    <div class="pull-right">
+      <button type="button" id="myButton" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">Add Student</button>
+      <button type="button" id="myButton2" class="btn btn-secondary" data-toggle="modal" data-target="#myModal2">Add Teacher</button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4><span class="glyphicon glyphicon-lock"></span>Add Student</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+              <form role="form" id="myForm" (ngSubmit)="registerStudent(fname.value, lname.value,uname.value,gender.value,dob.value,password.value)">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input #fname name="fname" type="text" class="form-control" id="fld1" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input #lname name="lname" type="text" class="form-control" id="fld2" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                  <label>Username</label>
+                  <input #uname name="uname" type="text" class="form-control" id="fld3" placeholder="Username">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input #password name="add" type="password" class="form-control" id="fld4" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label>Gender</label>
+                  <input #gender name="gender" type="text" class="form-control" id="fld5" placeholder="Gender">
+                </div>
+                <div class="form-group">
+                  <label>Date of birth</label>
+                  <input #dob name="dob" type="datetime" class="form-control" id="fld6" placeholder="mm/dd/yyyy">
+                </div>
+                <button type="button" data-dismiss="modal" (click)="registerStudent(fname.value, lname.value,uname.value,gender.value,dob.value,password.value)"
+                  class="btn btn-success btn-block">Submit</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+              <button type="reset" class="btn btn-success btn-default pull-left" (click)="myReset()" value="Reset">Reset</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="padding:35px 50px;">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4><span class="glyphicon glyphicon-lock"></span>Add Teacher</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+              <form role="form" id="myForm2" (ngSubmit)="registerTeacher(fname1.value, lname1.value,uname1.value,gender1.value,dob1.value,password1.value)">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input #fname1 name="fname" type="text" class="form-control" id="fld1" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input #lname1 name="lname" type="text" class="form-control" id="fld2" placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                  <label>Username</label>
+                  <input #uname1 name="uname" type="text" class="form-control" id="fld3" placeholder="Username">
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input #password1 name="add" type="password" class="form-control" id="fld4" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label>Gender</label>
+                  <input #gender1 name="gender" type="text" class="form-control" id="fld5" placeholder="Gender">
+                </div>
+                <div class="form-group">
+                  <label>Date of birth</label>
+                  <input #dob1 name="dob" type="datetime" class="form-control" id="fld6" placeholder="mm/dd/yyyy">
+                </div>
+                <button type="button" data-dismiss="modal" (click)="registerTeacher(fname1.value, lname1.value,uname1.value,gender1.value,dob1.value,password1.value)"
+                  class="btn btn-success btn-block">Submit</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+              <button type="reset" class="btn btn-success btn-default pull-left" (click)="myReset2()" value="Reset">Reset</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#myButton").click(function () {
+          $("#myModal").modal();
+        });
+        $('#myButton2').click(function () {
+          $("#myModal2").modal();
+        });
+      });
+    </script>
+
+  </div>
+
+  <div class="card-block">
+    <h3>Teachers</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Gender</th>
+            <th>Birth date</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Gender</th>
+            <th>Birth date</th>
+            <th>Salary</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let teacher of teachers">
+            <td>
+              <a routerLink="/dashboard/teachers/{{ teacher.id }}">{{teacher.User.firstname}}</a>
+
+            </td>
+            <td>{{teacher.User.lastname}}</td>
+            <td>{{teacher.User.username}}</td>
+            <td>{{teacher.User.gender}}</td>
+            <td>{{teacher.User.dob| date:'dd/MM/yyyy'}}</td>
+            <td>$320,800</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="card-block">
+    <h3>Students</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Gender</th>
+            <th>Birth date</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Gender</th>
+            <th>Birth date</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let student of students">
+            <td>
+              <a routerLink="/dashboard/students/{{ student.id }}">{{student.User.firstname}}</a>
+            </td>
+            <td>{{student.User.lastname}}</td>
+            <td>{{student.User.username}}</td>
+            <td>{{student.User.gender}}</td>
+            <td>{{student.User.dob| date:'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="card-block">
+      <h3>Staff</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered" width="100%" id="dataTable" cellspacing="0">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+              <th>Gender</th>
+              <th>Birth date</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+              <th>Gender</th>
+              <th>Birth date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr *ngFor="let staff of staffs">
+              <td>
+                <a routerLink="/dashboard/staffs/{{ staff.id }}">{{staff.User.firstname}}</a>
+              </td>
+              <td>{{staff.User.lastname}}</td>
+              <td>{{staff.User.username}}</td>
+              <td>{{staff.User.gender}}</td>
+              <td>{{staff.User.dob}}</td>
+              <td>$320,800</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

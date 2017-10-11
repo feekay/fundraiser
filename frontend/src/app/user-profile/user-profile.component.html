@@ -1,0 +1,9 @@
+<p>
+  user-profile works!
+</p>
+<form (ngSubmit)="onSubmit()">
+  <input type=file  (change)="fileChange($event)"/>
+  <input type=text name="username" [(ngModel)]=username/>
+  <input type=submit />
+</form>
+<p>{{user.name}}{{user.email}}</p>
