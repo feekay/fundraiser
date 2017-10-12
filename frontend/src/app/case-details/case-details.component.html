@@ -10,3 +10,10 @@
 <div *ngIf="type == 'cash'">
    <h1>{{Case.Case.title}}</h1>
 </div>
+<div *ngFor="let attached of Case.Case.Attachments">
+  <img src="{{base}}{{attached.related_file}}" width="200px" height="200px"/>
+</div>
+<form (ngSubmit)="updateCase()">
+  <input type=file  (change)="fileChange($event)" multiple />
+  <input type=submit value="Submit"/>
+</form>

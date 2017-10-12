@@ -16,6 +16,7 @@ export class CaseService {
   private apipath="/api/";
   private caseUrl = baseUrl + this.apipath;
   private options;
+  private postOptions;
   constructor(private http: Http, authService: AuthService, location: Location) {
     if (location.path().includes('/blood')) {
       this.caseUrl += 'blood';
@@ -25,11 +26,12 @@ export class CaseService {
     } else if (location.path().includes('volunteer')) {
       this.caseUrl += 'volunteer';
     }
+    this.postOptions = authService.getUploadHeaders(); 
     this.options = authService.getHeaders();
   }
 
   registerCase(Case: any): Promise<any> {
-    return this.http.post(this.caseUrl, Case, this.options)
+    return this.http.post(this.caseUrl, Case, this.postOptions)
       .toPromise();
   }
 
@@ -49,7 +51,7 @@ export class CaseService {
   }
 
   updateCase(id: string, Case: any): Promise<any> {
-    return this.http.put(this.caseUrl + '/' + id, Case, this.options)
+    return this.http.put(this.caseUrl + '/' + id, Case, this.postOptions)
       .toPromise();
   }
 

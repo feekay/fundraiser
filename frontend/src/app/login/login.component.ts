@@ -18,7 +18,7 @@ export class LoginComponent {
     this.authService.login(username, pass).then(function (res) {
       this.authService.setToken(res.json()['data']['token']);
       // this.authService.setId(res.json()['id']);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
       this.error = "";
     }.bind(this)).catch(function (error) {
       console.log("An error occured ", error.json());
