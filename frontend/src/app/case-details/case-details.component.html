@@ -1,3 +1,154 @@
+<br />
+<br />
+<br />
+<br />
+	<div class="row">
+		<div class="container">
+			<div class="col-sm-6">
+				<div class="">
+					<img class="ProfileTwo" src="images/Elijah_Wood_as_Frodo_Baggins.png" alt="" />
+				</div>
+				<div class="col-sm-12">
+					<h2>{{Case.Case.title}}</h2>
+				</div>
+				<div class="hidden-xs col-sm-2">
+					 <button class="btn btn-facebook FacebookBtn" ceiboShare  [facebook]="{u: repoUrl}" ><i href="" class="fa fa-facebook" style="color:white"> Share</i></button>
+				</div>
+				<div class="hidden-xs col-sm-2">
+					 <button class="btn btn-facebook TwitterBtn"  ceiboShare  [twitter]="{url: repoUrl,text:'Help support '+Case.Case.title+'\n'}" ><i href="" class="fa fa-twitter" style="color:white"> Tweet</i></button>
+				</div>
+				<div class="" style="float:right; padding:6px;">
+					<i class="fa fa-line-chart" aria-hidden="true" style="color:green"><b> 10K Shares</b></i>
+				</div>
+				<div id="exTab1" class="col-sm-12">	
+					<ul  class="nav nav-tabs">
+								<li class="active text-center col-sm-6" ><a href="#1a" data-toggle="tab">Story</a></li>
+								<li class="text-center col-sm-6"><a href="#2a" data-toggle="tab">Updates</a></li>
+							</ul>
+
+								<div class="tab-content clearfix">
+									  <div class="tab-pane active" id="1a">
+										<p>{{Case.Case.description}}</p>
+										<img class="ProfileTwo" src="assets/images/412px-Jenny_Dolfen_-_Frodo_Baggins.jpg" />
+									  </div>
+										<div class="tab-pane" id="2a">
+										<p>Some of the structures in Gondor and Mordor today, such as Gondor Fortresses (later renamed to Gondor Watchfort), Gondor Smithies, Mordor Towers, and Mordor Orc Camps, were added in this update.</p>
+										<img class="ProfileTwo" src="assets/images/412px-Jenny_Dolfen_-_Frodo_Baggins.jpg" />
+										</div>
+								</div>
+								<div class="clearfix"></div>
+				</div><br />
+				<div class="clearfix"></div>
+			</div><br />
+
+			
+			<div class="col-sm-6">
+				<!--- TODO ADD TRENDING ngIf cond flag here -->
+				<div class="CampaignDiv">
+					<i class="fa fa-line-chart" aria-hidden="true" style="color:green"></i><b> This campaign is trending</b>
+				</div><br />
+				<div class="ProgressBarDiv" *ngIf="type == 'cash'">
+				  <h3><strong>Rs.{{Case.amount_recieved}}</strong> of Rs.{{Case.amount_required}} goal</h3>
+				  
+				  <div class="progress" >
+					<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': Case.percent_raised +'%' }"></div>
+					
+				  </div>
+				  <p style="font-size:12px;">Raised by {{Case.Donations.length}} people in 10 days</p>
+				  <button class="btn btn-primary btn-lg"> <i class="fa fa-heart" aria-hidden="true" style="color:white"></i> Donate Now</button>
+				  <button class="btn btn-primary btn-lg FacebookBtn" ceiboShare  [facebook]="{u: repoUrl}"><i href="" class="fa fa-facebook" style="color:white"> Share</i></button>
+				  <button class="btn btn-primary btn-lg TwitterBtn" ceiboShare  [twitter]="{url: repoUrl,text:'Help support '+Case.Case.title+'\n'}" ><i href="" class="fa fa-twitter" style="color:white"> Tweet</i></button>
+	
+				</div><br>
+				<div class="col-sm-12" style="">
+					<p>{{Case.createdAt | date:'short'}}</p><hr>
+					<div class="col-sm-3">
+						<img src={{base}}{{Case.Case.User.profile_photo}} class="image--cover">
+					</div>
+					<div class="col-sm-9">
+						<p style="margin: -4px 0 10px;"><strong>{{Case.Case.User.name}}</strong></p>
+						<p style="margin: -4px 0 10px;"><span style=""><i class="fa fa-tags" aria-hidden="true"></i></span> <span style="">{{Case.category}}</span></p>
+						<p style="margin: -4px 0 10px;"><span style=""><i class="fa fa-map-marker" aria-hidden="true"></i></span> <span style="">Shire</span></p>
+						
+					</div>
+				</div><br />
+				<!--
+				<div class="col-sm-12 TopSupportMain">
+					<div class="TopSupportDiv">
+						<b>Top Supporters</b>
+					</div><br />
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<h4>First Donor</h4>
+							<hr style="margin-top:0px;">
+							<div class="col-sm-3">
+								<img  src="https://i.kinja-img.com/gawker-media/image/upload/gd8ljenaeahpn0wslmlz.jpg" class="image--cover">
+							</div>
+							<div class="col-sm-9">
+								<p style="margin: -4px 0 10px;"><strong> &nbsp;Frodo Baggins</strong></p>
+								<p style="margin: -4px 0 10px;"> &nbsp;Rs. 500</p>
+							</div>
+							<hr style="margin-top:0px;"><br/>
+						</div>
+						
+					</div>
+					<div class="col-sm-12" style="padding:10px">
+						<div class="col-sm-12">
+							<h4>Most raised from sharing</h4>
+							<hr style="margin-top:0px;">
+							<div class="col-sm-3">
+								<img  src="https://i.kinja-img.com/gawker-media/image/upload/gd8ljenaeahpn0wslmlz.jpg" class="image--cover">
+							</div>
+							<div class="col-sm-9">
+								<p style="margin: -4px 0 10px;"><strong> &nbsp;Frodo Baggins</strong></p>
+								<p style="margin: -4px 0 10px;"> &nbsp;Rs. 500 from sharing</p>
+							</div>
+							<hr style="margin-top:0px;"><br/>
+						</div>
+						
+					</div>
+				</div>
+				-->
+				<div class="col-sm-12 RecentDonationMain">
+					<div class="RecentDonationDiv">
+						<b>Recent Donations</b>
+					</div><br />
+					<div class="col-sm-12" *ngFor="let donation of Case.Donations">
+						<div class="col-sm-12">
+							
+							<hr style="margin-top:0px;">
+							<div class="col-sm-3">
+								<img  src="{{base}}{{donation.User.profile_photo}}" class="image--cover">
+							</div>
+							<div class="col-sm-9">
+								<p style="margin: -4px 0 10px;"><strong> &nbsp;{{donation.User.name}}</strong></p>
+								<p style="margin: -4px 0 10px;"> &nbsp;Rs. {{donation.amount}}</p>
+								<p style="margin: -4px 0 10px;"> &nbsp;{{donation.pay_time| date:'short'}}</p>								
+							</div>
+							<hr style="margin-top:0px;"><br/>
+						</div>
+						
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-7 CommentMain">
+					<h3>Leave a Comment or Ask a Question</h3>
+					<div class="col-sm-3 CommentProfilePic text-center">
+						<img  src="{{base}}{{currentUser.profile_photo}}" class="image--cover">
+					</div>
+					<div class="col-sm-9 CommentBoxDiv">
+						<textarea class="CommentBox" placeholder="Enter your comment here.." #commentText></textarea>
+						<button class="btn btn-default" (click)="postComment(commentText.value)" style="float:right;">Submit</button>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+	</div>
+
+<!--
 <p>
   case-details works!
 </p>
@@ -17,3 +168,5 @@
   <input type=file  (change)="fileChange($event)" multiple />
   <input type=submit value="Submit"/>
 </form>
+
+-->

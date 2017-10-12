@@ -33,10 +33,10 @@ var obj = {
                 },
                 include: [{
                     model: models.User,
-                    attributes: ['id', 'name', 'username']
+                    attributes: ['id', 'name', 'profile_photo']
                 }, {
                     model: models.Comment
-                },{
+                }, {
                     model: models.Attachment
                 }]
             }]
@@ -63,15 +63,19 @@ var obj = {
                 },
                 include: [{
                     model: models.User,
-                    attributes: ['id', 'name', 'username']
+                    attributes: ['id', 'name', 'profile_photo']
                 }, {
                     model: models.Comment
-                },{
+                }, {
                     model: models.Attachment
                 }]
             },
             {
                 model: models.Donation,
+                include: [{
+                    model: models.User,
+                    attributes: ['id', 'name', 'profile_photo']
+                }]
                 /*where: {
                         paid: true
                 }
@@ -101,10 +105,10 @@ var obj = {
                 },
                 include: [{
                     model: models.User,
-                    attributes: ['id', 'name', 'username']
+                    attributes: ['id', 'name', 'profile_photo']
                 }, {
                     model: models.Comment
-                },{
+                }, {
                     model: models.Attachment
                 }]
             }]

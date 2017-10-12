@@ -20,6 +20,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { CaseService } from "app/services/case.service";
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserService } from "app/services/user.service";
+import { CeiboShare } from "app/directive/share";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     LogoutComponent,
     CaseDetailsComponent,
     UserProfileComponent,
+    CeiboShare
   ],
   imports: [
     BrowserModule,

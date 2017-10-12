@@ -6,6 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { baseUrl } from "app/constants";
 @Injectable()
 export class AuthService {
+    private user: any;
     private id: string = "";
 
     private authUrl = baseUrl + "/auth/status";
@@ -36,7 +37,7 @@ export class AuthService {
     }
 
     signup(name: string, email: string, password: string): Promise<any> {
-        return this.http.post(this.signupUrl, {name:name ,email: email, password: password }, this.options)
+        return this.http.post(this.signupUrl, { name: name, email: email, password: password }, this.options)
             .toPromise();
     }
 
@@ -67,9 +68,9 @@ export class AuthService {
         return Promise.reject(error.message || error);
     }
     getHeaders() {
-        return new RequestOptions({ headers: new Headers({ "Content-Type": "application/json", "Authorization": "Bearer "+this.token }) });
+        return new RequestOptions({ headers: new Headers({ "Content-Type": "application/json", "Authorization": "Bearer " + this.token }) });
     }
-    getUploadHeaders(){
-        return new RequestOptions({ headers: new Headers({"Accept": "application/json", "Authorization": "Bearer "+this.token }) });        
+    getUploadHeaders() {
+        return new RequestOptions({ headers: new Headers({ "Accept": "application/json", "Authorization": "Bearer " + this.token }) });
     }
 }

@@ -15,6 +15,7 @@ export class CaseService {
 
   private apipath="/api/";
   private caseUrl = baseUrl + this.apipath;
+  private commentUrl = baseUrl+this.apipath+'case/comment'
   private options;
   private postOptions;
   constructor(private http: Http, authService: AuthService, location: Location) {
@@ -58,5 +59,9 @@ export class CaseService {
   subscribe(): Promise<any> {
     return this.http.post(this.caseUrl + '/subscribe', null, this.options)
       .toPromise();
+  }
+  postComment(id:number,text:string):Promise<any>{
+    return this.http.post(this.commentUrl,{caseId:id,text:text},this.postOptions)
+    .toPromise();
   }
 }

@@ -10,14 +10,13 @@ import { Helper } from "app/services/helper";
 
 export class LoginComponent {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,private router: Router) { }
 
   error: string = "";
   
   public login(username: string, pass: string): void {
     this.authService.login(username, pass).then(function (res) {
       this.authService.setToken(res.json()['data']['token']);
-      // this.authService.setId(res.json()['id']);
       this.router.navigate(['/']);
       this.error = "";
     }.bind(this)).catch(function (error) {
