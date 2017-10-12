@@ -40,15 +40,15 @@ router.get('/cash/:cashid/donations', donateMiddlewares.caseDonations);
 
 //------------------ADD CASE---------------//
 router.post('/cash', passport.authenticate('jwt', {session: false}),
-    upload.array('photos',8),
+    upload.array('photos'),
     createMiddlewares.createCashCase);
 
 router.post('/blood', passport.authenticate('jwt', {session: false}),
-    upload.array('photos',8),
+    upload.array('photos'),
     createMiddlewares.createBloodCase);
 
 router.post('/volunteer', passport.authenticate('jwt', {session: false}),
-    upload.array('photos',8),
+    upload.array('photos'),
     createMiddlewares.createVolunteerCase);
 
 router.post('/case/comment',passport.authenticate('jwt', {session: false}),
@@ -89,15 +89,15 @@ router.post('/checkout', passport.authenticate('jwt', {session: false}),
 
 //------------------UPDATE-------------------//
 router.put('/cash/:cashid', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos'),
     updateMiddlewares.updateCashCase); //EDIT CASE
 
 router.put('/blood/:bloodid', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos'),
     updateMiddlewares.updateBloodDonation); //EDIT CASE
 
 router.put('/volunteer/:vid', passport.authenticate('jwt', {session: false}),
-    upload.any(),
+    upload.array('photos'),
     updateMiddlewares.updateVolunteering); //EDIT CASE
 
 router.post('/cash/:cashid/close', passport.authenticate('jwt', {session: false}),

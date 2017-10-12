@@ -36,6 +36,8 @@ var obj = {
                     attributes: ['id', 'name', 'username']
                 }, {
                     model: models.Comment
+                },{
+                    model: models.Attachment
                 }]
             }]
         }).then(function (blood) {
@@ -64,6 +66,8 @@ var obj = {
                     attributes: ['id', 'name', 'username']
                 }, {
                     model: models.Comment
+                },{
+                    model: models.Attachment
                 }]
             },
             {
@@ -100,6 +104,8 @@ var obj = {
                     attributes: ['id', 'name', 'username']
                 }, {
                     model: models.Comment
+                },{
+                    model: models.Attachment
                 }]
             }]
         }).then(function (volunteer) {

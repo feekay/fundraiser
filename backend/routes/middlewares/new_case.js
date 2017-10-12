@@ -3,6 +3,7 @@ var constants = require('../../config/constants');
 var response = require('../../helpers/response');
 var validate = require('../../helpers/validate');
 var params = require('../../helpers/parameters');
+var addImages = require('../../helpers/create-attachments');
 
 //models.transaction();
 var obj = {
@@ -12,14 +13,14 @@ var obj = {
         if (validate(params.CASE, post) && validate(params.BLOOD, post)) {
             models.sequelize.transaction(function (t) {
                 return models.Case.create({
-                        title: post.title,
-                        description: post.description,
-                        contact: post.contact,
-                        url: post.url,
-                        active: true,
-                        verified: false,
-                        //userId:user_id
-                    }, {
+                    title: post.title,
+                    description: post.description,
+                    contact: post.contact,
+                    url: post.url,
+                    active: true,
+                    verified: false,
+                    //userId:user_id
+                }, {
                         transaction: t
                     }).then(function (c) {
                         c.setUser(user_id);
@@ -28,10 +29,11 @@ var obj = {
                             location: post.location,
                             // cordinate:{post.lognitude,post.lattitude}
                         }, {
-                            transaction: t
-                        }).then(function (blood) {
-                            blood.setCase(c);
-                        }).catch(next);
+                                transaction: t
+                            }).then(function (blood) {
+                                blood.setCase(c);
+                                addImages(req.files, c);
+                            }).catch(next);
                     })
                     .catch(next);
             }).then(function (result) {
@@ -51,14 +53,14 @@ var obj = {
         if (validate(params.CASE, post) && validate(params.CASH, post)) {
             models.sequelize.transaction(function (t) {
                 return models.Case.create({
-                        title: post.title,
-                        description: post.description,
-                        contact: post.contact,
-                        url: post.url,
-                        active: true,
-                        verified: false,
-                        // user_id:user_id
-                    }, {
+                    title: post.title,
+                    description: post.description,
+                    contact: post.contact,
+                    url: post.url,
+                    active: true,
+                    verified: false,
+                    // user_id:user_id
+                }, {
                         transaction: t
                     }).then(function (c) {
                         c.setUser(user_id);
@@ -67,15 +69,16 @@ var obj = {
                             amount_recieved: 0,
                             category: post.category
                         }, {
-                            transaction: t
-                        }).then(function (cash) {
-                            cash.setCase(c);
-                            res.status(constants.HTTP.CODES.CREATED);
-                            res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
-                        }).catch(next);
+                                transaction: t
+                            }).then(function (cash) {
+                                cash.setCase(c);
+                                addImages(req.files, c);
+                            }).catch(next);
                     })
                     .catch(next);
-            }).then(function (result) {
+            }).then(function () {
+                res.status(constants.HTTP.CODES.CREATED);
+                res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
             }).catch(next);
 
         } else {
@@ -90,14 +93,14 @@ var obj = {
         if (validate(params.CASE, post) && validate(params.VOLUNTEER, post)) {
             models.sequelize.transaction(function (t) {
                 return models.Case.create({
-                        title: post.title,
-                        description: post.description,
-                        contact: post.contact,
-                        url: post.url,
-                        active: true,
-                        verified: false,
-                        //user_id:user_id
-                    }, {
+                    title: post.title,
+                    description: post.description,
+                    contact: post.contact,
+                    url: post.url,
+                    active: true,
+                    verified: false,
+                    //user_id:user_id
+                }, {
                         transaction: t
                     }).then(function (c) {
                         c.setUser(user_id);
@@ -105,10 +108,11 @@ var obj = {
                             duration: post.length,
                             time: post.time
                         }, {
-                            transaction: t
-                        }).then(function (volunteer) {
-                            volunteer.setCase(c);
-                        }).catch(next);
+                                transaction: t
+                            }).then(function (volunteer) {
+                                volunteer.setCase(c);
+                                addImages(req.files,c);
+                            }).catch(next);
                     })
                     .catch(next);
             }).then(function (result) {
@@ -133,8 +137,8 @@ var obj = {
                     text: post.text,
                     likes: 0,
                     UserId: user,
-                    CaseId:c.id
-                }).then(function(comment){
+                    CaseId: c.id
+                }).then(function (comment) {
                     res.status(constants.HTTP.CODES.CREATED);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS))
                 });

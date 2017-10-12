@@ -1,14 +1,16 @@
 var models = require('../../models');
 var response = require('../../helpers/response');
 var constants = require('../../config/constants');
-
+var addImages = require('../../helpers/create-attachments');
 module.exports = {
 
     updateUserDetails: function (req, res, next) {
         var user = req.user.id;
-       // console.log(req.file);
-        var post= req.body;
-        console.log(post);
+        var post = req.body;
+        var filename = req.file.path;
+        if (filename) {
+            filename = filename.substr(filename.indexOf("/"));
+        }
         models.User.find({
             where: {
                 id: user
@@ -22,12 +24,13 @@ module.exports = {
                     phone: post.phone || user.phone,
                     account_no: post.account_no || user.account_no,
                     bank: post.bank || user.bank,
-                    address: post.address || user.address
-                }).then(function(){
+                    address: post.address || user.address,
+                    profile_photo: filename || user.profile_photo
+                }).then(function () {
                     res.status(constants.HTTP.CODES.UPDATE);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
                 }).catch(next);
-                
+
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));
@@ -47,7 +50,7 @@ module.exports = {
             include: [{
                 model: models.Case,
                 where: {
-                    UserId : user                
+                    UserId: user
                 }
             }]
         }).then(function (c) {
@@ -61,7 +64,8 @@ module.exports = {
                     }),
                     c.updateAttributes({
                         category: c.category || post.category
-                    })
+                    }),
+                    addImages(req.files, c.Case)
                 ]).then(function () {
                     res.status(constants.HTTP.CODES.UPDATE);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
@@ -101,7 +105,9 @@ module.exports = {
                 c.updateAttributes({
                     blood_group: post.blood_group || c.blood_group,
                     location: post.location || c.location
-                })
+                }),
+                addImages(req.files, c.Case)
+
                 ]).then(function () {
                     res.status(constants.HTTP.CODES.UPDATE);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
@@ -123,7 +129,7 @@ module.exports = {
             include: [{
                 model: models.Case,
                 where: {
-                    UserId : user                
+                    UserId: user
                 }
             }]
         }).then(function (c) {
@@ -138,7 +144,8 @@ module.exports = {
                     c.updateAttributes({
                         duration: post.duration || c.duration,
                         time: post.time || c.time
-                    })
+                    }),
+                    addImages(req.files,c.Case)                    
                 ]).then(function () {
                     res.status(constants.HTTP.CODES.UPDATE);
                     res.json(response(constants.MESSAGES.GENERAL.SUCCESS));
