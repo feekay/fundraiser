@@ -18,15 +18,7 @@ export class CaseService {
   private commentUrl = baseUrl+this.apipath+'case/comment'
   private options;
   private postOptions;
-  constructor(private http: Http, authService: AuthService, location: Location) {
-    if (location.path().includes('/blood')) {
-      this.caseUrl += 'blood';
-    }
-    else if (location.path().includes('cash')) {
-      this.caseUrl += 'cash';
-    } else if (location.path().includes('volunteer')) {
-      this.caseUrl += 'volunteer';
-    }
+  constructor(private http: Http, authService: AuthService) {
     this.postOptions = authService.getUploadHeaders(); 
     this.options = authService.getHeaders();
   }

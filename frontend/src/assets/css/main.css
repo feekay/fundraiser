@@ -1,3 +1,6 @@
+body {
+  overflow-x: hidden;
+}
 .image--cover {
   width: 80px;
   height: 80px;
@@ -53,6 +56,9 @@
 }	
 .FacebookBtn{
 	background-color:#3b5998;
+}
+.GoogleBtn{
+	background-color:#d34836;
 }
 .TwitterBtn{
 	background-color:#00aced;

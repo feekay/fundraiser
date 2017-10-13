@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
     this.authService.signup(name, mail, pass).then(function (res) {
       this.authService.setToken(res.json()['data']['token']);
       // this.authService.setId(res.json()['id']);
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/']);
       this.error = "";
     }.bind(this)).catch(function (error) {
       console.log("An error occured ", error);
