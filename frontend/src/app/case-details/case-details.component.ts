@@ -15,7 +15,7 @@ export class CaseDetailsComponent implements OnInit {
   private currentUser: any;
   private files: any;
   private type: string;
-  private errorMessage: any;
+  private error: any;
   private id: string;
   private Case: any;
   private base = baseUrl;
@@ -64,10 +64,12 @@ export class CaseDetailsComponent implements OnInit {
       .then(function () {
         this.caseService.getCase(this.id).subscribe(
           Case => this.Case = Case,
-          err => this.errorMessage = err
+          err => this.error = err.status
         );
       }.bind(this))
-      .catch(onerror);
+      .catch(function (err) {
+        this.error = err.status
+      }.bind(this));
   }
   fileChange(event) {
     let fileList: FileList = event.target.files;
@@ -81,7 +83,9 @@ export class CaseDetailsComponent implements OnInit {
         //CLEAR COMMENT FIELD AND UPDATE PAGE
         this.Case.Case.Comments.push({ text: text, createdAt: Date.now() });
         console.log("success");
-      }.bind(this)).catch(onerror);
+      }.bind(this)).catch(function (err) {
+        this.error = err.status
+      }.bind(this));
     }
   }
 }

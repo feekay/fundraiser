@@ -22,6 +22,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserService } from "app/services/user.service";
 import { CeiboShare } from "app/directive/share";
 import { NewCaseComponent } from './new-case/new-case.component';
+import { ErrorComponent } from './error/error.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
     CaseDetailsComponent,
     UserProfileComponent,
     CeiboShare,
-    NewCaseComponent
+    NewCaseComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

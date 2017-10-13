@@ -9,14 +9,14 @@ import { baseUrl } from "app/constants";
 })
 export class UserProfileComponent implements OnInit {
   private files: FileList;
-  private errorMessage: any;
+  private error: any;
   private user: any;
-  private base = baseUrl+'/';
+  private base = baseUrl + '/';
   private username = "";
   constructor(private userService: UserService) {
     this.userService.getMyProfile().subscribe(
       user => this.user = user,
-      err => this.errorMessage = err
+      err => this.error = err.status
     );
   }
 
@@ -32,10 +32,12 @@ export class UserProfileComponent implements OnInit {
       .then(function () {
         this.userService.getMyProfile().subscribe(
           user => this.user = user,
-          err => this.errorMessage = err
+          err => this.error = err.status
         );
       }.bind(this))
-      .catch(onerror);
+      .catch(function (err) {
+        this.error = err.status
+      }.bind(this));
 
   }
   fileChange(event) {

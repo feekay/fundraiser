@@ -1,14 +1,20 @@
-<p>
-  new-case works!
-</p>
+<div *ngIf="!error">
 
-<form (ngSubmit)="addCase(type.value,{title:title.value, description:description.value})">
-  <input type=text #title/>
-  <input type=text #description/>
-  <select #type>
+  <p>
+    new-case works!
+  </p>
+
+  <form (ngSubmit)="addCase(type.value,{title:title.value, description:description.value})">
+    <input type=text #title/>
+    <input type=text #description/>
+    <select #type>
       <option value="blood">Blood</option>
       <option value="cash">Cash</option>
-      <option value="volunteering">Volunteering</option>      
+      <option value="volunteer">Volunteering</option>      
   </select>
-  <input type="submit"/>
-</form>
+    <input type="submit" />
+  </form>
+</div>
+<div *ngIf="error">
+  	<Error [error]="error"></Error>
+</div>

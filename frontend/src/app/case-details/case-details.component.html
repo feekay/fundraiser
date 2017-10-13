@@ -1,3 +1,4 @@
+<div *ngIf="!error">
 <br />
 <br />
 <br />
@@ -29,7 +30,7 @@
 								<div class="tab-content clearfix">
 									  <div class="tab-pane active" id="1a">
 										<p>{{Case.Case.description}}</p>
-										<img class="ProfileTwo" src="assets/images/412px-Jenny_Dolfen_-_Frodo_Baggins.jpg" />
+										<img class="ProfileTwo" src="{{base}}{{Case.Case.Attachments[0].related_file}}" />
 									  </div>
 										<div class="tab-pane" id="2a">
 										<p>Some of the structures in Gondor and Mordor today, such as Gondor Fortresses (later renamed to Gondor Watchfort), Gondor Smithies, Mordor Towers, and Mordor Orc Camps, were added in this update.</p>
@@ -118,11 +119,13 @@
 							
 							<hr style="margin-top:0px;">
 							<div class="col-sm-3">
-								<img  src="{{base}}{{donation.User.profile_photo}}" class="image--cover">
+								<img *ngIf="!donation.annonymous" src="{{base}}{{donation.User.profile_photo}}" class="image--cover">
+								<img *ngIf="donation.annonymous" src="https://i.kinja-img.com/gawker-media/image/upload/gd8ljenaeahpn0wslmlz.jpg" class="image--cover">								
 							</div>
 							<div class="col-sm-9">
-								<p style="margin: -4px 0 10px;"><strong> &nbsp;{{donation.User.name}}</strong></p>
-								<p style="margin: -4px 0 10px;"> &nbsp;Rs. {{donation.amount}}</p>
+								<p *ngIf="donation.annonymous" style="margin: -4px 0 10px;"><strong> &nbsp;Annonymous</strong></p>								
+								<p *ngIf="!donation.annonymous" style="margin: -4px 0 10px;"><strong> &nbsp;{{donation.User.name}}</strong></p>
+								<p style="margin: -4px 0 10px;" value="donation.amount"> &nbsp;Rs.{{donation.amount}}</p>
 								<p style="margin: -4px 0 10px;"> &nbsp;{{donation.pay_time| date:'short'}}</p>								
 							</div>
 							<hr style="margin-top:0px;"><br/>
@@ -147,7 +150,10 @@
 					<div class="clearfix"></div>
 				</div>
 	</div>
-
+</div>
+<div *ngIf="error">
+	<Error [error]="error"></Error>
+</div>
 <!--
 <p>
   case-details works!

@@ -1,11 +1,17 @@
-<p>
-  user-profile!
-</p>
-<form (ngSubmit)="onSubmit()">
-  <input type=file  (change)="fileChange($event)"/>
-  <input type=text name="username" [(ngModel)]=username/>
-  <input type=submit />
-</form>
-<p>{{user.name}}{{user.email}}</p>
-<h1>Photo</h1>
-<img src="{{base}}{{user.profile_photo}}" />
+<div *ngIf="!error">
+
+  <p>
+    user-profile!
+  </p>
+  <form (ngSubmit)="onSubmit()">
+    <input type=file (change)="fileChange($event)" />
+    <input type=text name="username" [(ngModel)]=username/>
+    <input type=submit />
+  </form>
+  <p>{{user.name}}{{user.email}}</p>
+  <h1>Photo</h1>
+  <img src="{{base}}{{user.profile_photo}}" />
+</div>
+<div *ngIf="error">
+  	<Error [error]="error"></Error>
+</div>

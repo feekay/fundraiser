@@ -11,47 +11,48 @@ import { CaseService } from "app/services/case.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private tab="cash";
+  private tab = "blood";
   private cases: Case;
-  private errorMessage: string;
+  private error: any;
 
 
-  constructor(private searchService: SearchService, private caseService:CaseService, private route:ActivatedRoute) {
-    
+  constructor(private searchService: SearchService, private caseService: CaseService, private route: ActivatedRoute) {
+
+  }
+
+  changeCaseType() {
+    console.log(this.tab);
     this.caseService.changeRoute(this.tab);
     this.caseService.getCases().subscribe(
       cases => this.cases = cases,
-      error => this.errorMessage = error
+      error => this.error = error.status
     );
   }
-
-  changeCaseType(){
+  ngOnInit() {
     this.caseService.changeRoute(this.tab);
     this.caseService.getCases().subscribe(
       cases => this.cases = cases,
-      error => this.errorMessage = error
+      error => { this.error = error.status; console.log(this.error) }
     );
   }
-  ngOnInit() {
-  }
 
-/*
-  constructor(private authService: AuthService, private router: Router) {
-    this.router.navigate(this.redirectRoute());
-  }
-
-  ngOnInit() {
-  }
-  redirectRoute(): string[] {
-    switch (this.authService.getPermission()) {
-      case PERMISSIONS.ADMIN:
-      case PERMISSIONS.STAFF:
-        return ["/dashboard"]
-      case PERMISSIONS.TEACHER:
-        return ["/teacher"]
-      case PERMISSIONS.STUDENT:
-        return ["/student"]
+  /*
+    constructor(private authService: AuthService, private router: Router) {
+      this.router.navigate(this.redirectRoute());
     }
-  }
-  */
+  
+    ngOnInit() {
+    }
+    redirectRoute(): string[] {
+      switch (this.authService.getPermission()) {
+        case PERMISSIONS.ADMIN:
+        case PERMISSIONS.STAFF:
+          return ["/dashboard"]
+        case PERMISSIONS.TEACHER:
+          return ["/teacher"]
+        case PERMISSIONS.STUDENT:
+          return ["/student"]
+      }
+    }
+    */
 }

@@ -1,7 +1,18 @@
+<div *ngIf="!error">
+
 <p>
   home works!
-  </p>
+</p>
+<select (change)="changeCaseType()" [(ngModel)]="tab">
+    <option value="cash">Cash</option>    
+    <option value="blood">Blood</option>
+    <option value="volunteer">Volunteer</option>
+</select>
   <div *ngFor= "let case of cases">
       <a routerLink="/cash/{{case.id}}">{{case.Case.title}}</a>
   </div>
 
+</div>
+<div *ngIf="error">
+  	<Error [error]="error"></Error>
+</div>

@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UsersComponent implements OnInit {
 
-  errorMessage: string;
+  error: any;
   constructor( private route: ActivatedRoute) {
 
   }

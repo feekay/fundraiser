@@ -9,6 +9,8 @@ import { Helper } from "app/services/helper";
 })
 export class NewCaseComponent implements OnInit {
 
+  private error;
+  private errorMessage:string="";
   constructor(private caseService: CaseService) { }
 
   ngOnInit() {
@@ -20,8 +22,10 @@ export class NewCaseComponent implements OnInit {
       this.caseService.registerCase(caseObject).then(function () {
         this.router.navigate(['/home']);
       })
-        .catch(onerror);
-    }else{
+        .catch(function (err) {
+          this.error = err.status
+        }.bind(this));
+    } else {
       console.log("invalid data");
     }
   }
