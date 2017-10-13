@@ -16,10 +16,18 @@ var obj = {
             },
             include: [{
                 model: models.Donation,
-                /*
-                                where: {
-                                    paid: true
-                                },*/
+                where: {
+                    paid: true
+                },
+                include: [{
+                    model: models.User,
+                    attributes: ['id', 'profile_photo', 'name'],
+                    where: {
+                        '$Donations.annonymous$': false
+                    },
+                    required: false
+                }],
+                required: false,
                 limit: 5,
                 offset: 0
             }]
@@ -72,6 +80,7 @@ var obj = {
                 models.Donation.create({
                     amount: post.amount,
                     paid: true,
+                    pay_time: Date.now(),
                     UserId: user.id,
                     CashDonationId: caseId
                 }).then(function () {
@@ -147,7 +156,8 @@ var obj = {
                 for (donation of donations) {
                     if (!donation.paid && donation.amount <= amount) {
                         donation.updateAttributes({
-                            paid: true
+                            paid: true,
+                            pay_time: Date.now()
                         }).then(function (d) {
                             d.getCashDonation().then(function (cash) {
                                 cash.updateAttributes({

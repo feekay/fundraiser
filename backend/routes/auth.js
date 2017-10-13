@@ -83,7 +83,7 @@ router.post('/reset/:token', function (req, res, next) {
       req.auth = user.id;
       user.updateAttributes({
         password: hasher.hash(post.password),
-        reset_time: new Date()
+        reset_time: Date.now()
       }).then(function () {
         models.Reset.find({ where: { key: req.key } }).then(function (r) {
           if (r) {
