@@ -74,12 +74,16 @@ var obj = {
                 model: models.Donation,
                 include: [{
                     model: models.User,
-                    attributes: ['id', 'name', 'profile_photo']
-                }]
-                /*where: {
-                        paid: true
-                }
-                */
+                    attributes: ['id', 'name', 'profile_photo'],
+                    required: false,
+                    where: {
+                        '$Donations.annonymous$': false
+                    }
+                }],
+                where: {
+                    paid: true
+                },
+                required: false
             }
             ]
         }).then(function (cash) {
