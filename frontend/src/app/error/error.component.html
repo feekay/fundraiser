@@ -1,0 +1,15 @@
+<p>
+  error works!
+</p>
+
+<div *ngIf="error==400">BAD REQUEST</div>
+<div *ngIf="error==404"><app-pagenotfound></app-pagenotfound></div>
+<div *ngIf="error==500 || error==0">
+  <p>
+    Oops! Something went wrong. Some bug has crept inside our servers.<br/>
+    SORRYYYYYYY!<br/>
+    We are trying to get it out our system ASAP.<br/>
+    Try sometime later, or you can report us this problem.<br/>
+    Maybe we don't know yet ;)<br/>
+  </p>
+  </div>
