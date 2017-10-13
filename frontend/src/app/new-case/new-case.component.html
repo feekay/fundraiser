@@ -1,0 +1,14 @@
+<p>
+  new-case works!
+</p>
+
+<form (ngSubmit)="addCase(type.value,{title:title.value, description:description.value})">
+  <input type=text #title/>
+  <input type=text #description/>
+  <select #type>
+      <option value="blood">Blood</option>
+      <option value="cash">Cash</option>
+      <option value="volunteering">Volunteering</option>      
+  </select>
+  <input type="submit"/>
+</form>

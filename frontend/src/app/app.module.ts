@@ -21,6 +21,7 @@ import { CaseService } from "app/services/case.service";
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserService } from "app/services/user.service";
 import { CeiboShare } from "app/directive/share";
+import { NewCaseComponent } from './new-case/new-case.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
   { path:'volunteer/:id', component:CaseDetailsComponent},
   { path:'profile/me', component:UserProfileComponent, canActivate:[CanActivateViaAuthGuard]},
   { path: 'signup', component: RegisterComponent, canActivate: [LoginGuard] },
-  { path: 'logout', component: LogoutComponent }, 
+  { path: 'campaign', component: NewCaseComponent },
+  { path: 'logout', component: LogoutComponent },  
 //  { path: 'profile',component:ProfileViewComponent, canActivate: [CanActivateViaAuthGuard]},
   { path: '**', component: PageNotFoundComponent },
 ]
@@ -45,7 +47,8 @@ const appRoutes: Routes = [
     LogoutComponent,
     CaseDetailsComponent,
     UserProfileComponent,
-    CeiboShare
+    CeiboShare,
+    NewCaseComponent
   ],
   imports: [
     BrowserModule,
