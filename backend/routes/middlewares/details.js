@@ -134,10 +134,7 @@ var obj = {
             },
             attributes: {
                 exclude: ['createdAt', 'updatedAt', 'password', 'type', 'reset_time']
-            },
-            include: [{
-                model: models.Donation
-            }]
+            }
         }).then(function (u) {
             res.status(constants.HTTP.CODES.SUCCESS);
             res.json(response(constants.HTTP.CODES.SUCCESS, u));
@@ -151,13 +148,72 @@ var obj = {
             },
             attributes: {
                 exclude: ['createdAt', 'updatedAt', 'credit', 'bank', 'account_no', 'address', 'phone', 'password', 'type', 'reset_time']
-            },
-            include: [{
-                model: models.Donation
-            }]
+            }
         }).then(function (u) {
             res.status(constants.HTTP.CODES.SUCCESS);
             res.json(response(constants.HTTP.CODES.SUCCESS, u));
+        }).catch(next);
+    },
+    userDonations(req, res, next) {
+        var query= req.query;        
+        models.Donation.findAll({
+            where: {
+                UserId: req.user.id
+            },
+            limit: 20,
+            offset: Number(query.offset) ||0,            
+            order: ['createdAt']
+        }).then(function (donations) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(response(constants.HTTP.CODES.SUCCESS, donations));
+        }).catch(next);
+    },
+    userPendingDonations(req, res, next) {
+        var query= req.query;
+        models.Donation.findAll({
+            where: {
+                UserId: req.user.id,
+                paid:false
+            },
+            limit: 20,
+            offset: Number(query.offset) ||0,
+            order: ['createdAt']
+        }).then(function (donations) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(response(constants.HTTP.CODES.SUCCESS, donations));
+        }).catch(next);
+    },
+    userCases(req, res, next) {
+        Promise.all([
+            models.CashDonation.findAll({
+                include: [{
+                    model: models.Case,
+                    where: {
+                        UserId: req.user.id
+                    }
+                }],
+                limit:10
+            }),
+            models.BloodDonation.findAll({
+                include: [{
+                    model: models.Case,
+                    where: {
+                        UserId: req.user.id
+                    }
+                }],
+                limit:10
+            }), models.Volunteering.findAll({
+                include: [{
+                    model: models.Case,
+                    where: {
+                        UserId: req.user.id
+                    }
+                }],
+                limit:10
+            })
+        ]).then(function (results) {
+            res.status(constants.HTTP.CODES.SUCCESS);
+            res.json(response(constants.HTTP.CODES.SUCCESS, { cash: results[0], blood: results[1], volunteer: results[2] }));
         }).catch(next);
     }
 };

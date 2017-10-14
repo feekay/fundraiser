@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [literals.BLOOD_GROUPS.ALL]
       }
     },
-    location: DataTypes.STRING,
+    place: DataTypes.STRING,
     cordinate: DataTypes.GEOMETRY('POINT'),
     //latitude: DataTypes.STRING,
     //longnitude: DataTypes.STRING

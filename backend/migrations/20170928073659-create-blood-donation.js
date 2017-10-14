@@ -11,7 +11,7 @@ module.exports = {
       blood_group: {
         type: Sequelize.STRING
       },
-      location: {
+      place: {
         type: Sequelize.STRING
       },
       cordinate:{

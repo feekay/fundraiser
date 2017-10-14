@@ -14,7 +14,7 @@ module.exports = {
       time: {
         type: Sequelize.DATE
       },
-      location: {
+      place: {
         type: Sequelize.STRING
       },
       createdAt: {

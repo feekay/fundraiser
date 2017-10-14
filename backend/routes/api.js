@@ -59,7 +59,7 @@ router.get('/cash/:cashid', detailMiddlewares.cashCaseDetails);
 router.get('/blood/:bloodid', detailMiddlewares.bloodCaseDetails);
 router.get('/volunteer/:vid', detailMiddlewares.volunteeingCaseDetails);
 
-//router.get('/cash/:cashid/donations', ) //Details about donations to this case
+router.get('/cash/:cashid/donations', donateMiddlewares.caseDonations) //Details about donations to this case
 //router.get('/volunteer/:vid/participants', ); //Details about who is going
 
 
@@ -117,6 +117,15 @@ router.put('/profile/me', passport.authenticate('jwt', {session: false }),
 
 router.get('/profile/me', passport.authenticate('jwt', {session: false}),
     detailMiddlewares.userDetails);
+
+router.get('/profile/cases/all', passport.authenticate('jwt', {session: false}),
+    detailMiddlewares.userCases);
+
+router.get('/profile/donations/pending', passport.authenticate('jwt', {session: false}),
+    detailMiddlewares.userPendingDonations);
+
+router.get('/profile/donations/all', passport.authenticate('jwt', {session: false}),
+    detailMiddlewares.userDonations);
 
 router.get('/profile/:userid',detailMiddlewares.publicUserDetails); //RETURN USER PROFILE
 

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     duration: DataTypes.STRING,
     time: DataTypes.DATE,
-    location: DataTypes.STRING
+    place: DataTypes.STRING
   }, {
     charset: 'utf8',
     collate: 'utf8_unicode_ci'

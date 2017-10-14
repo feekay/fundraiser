@@ -20,13 +20,16 @@ module.exports = {
       url: {
         type: Sequelize.STRING
       },
-      active:{
-        type:Sequelize.BOOLEAN,
-        defaultValue:true
+      location: {
+        type: Sequelize.STRING
       },
-      verified:{
-        type:Sequelize.BOOLEAN,
-        defaultValue:true
+      active: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
+      verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,

@@ -10,31 +10,33 @@ var obj = {
     },
     caseDonations: function (req, res, next) {
         var param = req.params.cashid;
+        var query = req.query;
         models.CashDonation.find({
             where: {
-                id: param,
+                id: param
             },
             include: [{
                 model: models.Donation,
+                include: [{
+                    model: models.User,
+                    attributes: ['id', 'name', 'profile_photo'],
+                    required: false,
+                    where: {
+                        '$Donation.annonymous$': false
+                    }
+                }],
                 where: {
                     paid: true
                 },
-                include: [{
-                    model: models.User,
-                    attributes: ['id', 'profile_photo', 'name'],
-                    where: {
-                        '$Donations.annonymous$': false
-                    },
-                    required: false
-                }],
                 required: false,
-                limit: 5,
-                offset: 0
-            }]
+                limit: 10,
+                offset: Number(query.offset) || 0
+            }],
+            required: false
         }).then(function (c) {
             if (c) {
                 res.status(constants.HTTP.CODES.SUCCESS);
-                res.json(response(constants.HTTP.CODES.SUCCESS, c.Users));
+                res.json(response(constants.HTTP.CODES.SUCCESS, c.Donations));
             } else {
                 res.status(constants.HTTP.CODES.NOT_FOUND);
                 res.json(response(constants.MESSAGES.GENERAL.NOT_FOUND));

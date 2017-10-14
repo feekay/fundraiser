@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
+    location:{
+      type: DataTypes.STRING
+    },
     verified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

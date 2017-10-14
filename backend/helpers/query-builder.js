@@ -29,7 +29,7 @@ module.exports = {
             options[limit]=query[limit];
         }
         if(query.offset){
-            options[limit]=query[limit];            
+            options[offset]=Number(query[offset]);            
         }
         if(query.sort){
             options[sort]=query.sort;
